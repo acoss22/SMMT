@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react';
+import styles from './tab.module.scss'; // Import the CSS module
 
 interface TabProps {
   tabs: string[];
@@ -13,19 +14,19 @@ const Tab: React.FC<TabProps> = ({ tabs, children }) => {
   };
 
   return (
-    <div className="tab-container">
-      <div className="tab-buttons">
+    <div className={styles['tab-container']}>
+      <div className={styles['tab-buttons']}>
         {tabs.map((tab, index) => (
           <button
             key={index}
-            className={index === activeTab ? 'active' : ''}
+            className={`${styles['tab-button']} ${index === activeTab ? styles['active'] : ''}`}
             onClick={() => handleTabClick(index)}
           >
             {tab}
           </button>
         ))}
       </div>
-      <div className="tab-content">
+      <div className={styles['tab-content']}>
         {React.Children.toArray(children)[activeTab]} {/* Render the child based on activeTab */}
       </div>
     </div>

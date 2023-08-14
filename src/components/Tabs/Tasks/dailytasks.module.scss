@@ -1,0 +1,25 @@
+/* dailytasks.module.scss */
+
+.tab2-content {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tab2-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .task-checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .task-checkbox {
+    margin-right: 10px;
+  }
+  

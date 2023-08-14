@@ -1,18 +1,14 @@
-import React, { useState, ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import styles from './tab.module.scss';
 
 interface TabProps {
   tabs: string[];
+  activeTab: number; // Add activeTab prop
+  handleTabClick: (index: number) => void; // Add handleTabClick prop
   children: ReactNode;
 }
 
-const Tab: React.FC<TabProps> = ({ tabs, children }) => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
-
+const Tab: React.FC<TabProps> = ({ tabs, activeTab, handleTabClick, children }) => {
   return (
     <div className={styles['tab-container']}>
       <div className={styles['tab-buttons']}>
@@ -27,7 +23,7 @@ const Tab: React.FC<TabProps> = ({ tabs, children }) => {
         ))}
       </div>
       <div className={styles['tab-content']}>
-        {React.Children.toArray(children)[activeTab]}
+        {children}
       </div>
     </div>
   );

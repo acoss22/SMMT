@@ -17,13 +17,26 @@ module.exports = {
         exclude: /node_modules/,
         use: 'ts-loader',
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+            },
+          },
+        ],
+      },
     ],
   },
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,
     port: 3000,
-  }, 
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'My React App', // Set your app's title
@@ -33,9 +46,9 @@ module.exports = {
         'http-equiv': {
           'Content-Security-Policy': "default-src 'self' https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com",
           // Add more directives as needed
-        }
-      }
-    })
+        },
+      },
+    }),
     // ... other plugins ...
   ],
 };

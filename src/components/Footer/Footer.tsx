@@ -6,7 +6,7 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ copyright }) => {
   return (
-    <footer>
+    <footer className='footer'>
       <p>&copy; {copyright}</p>
     </footer>
   );

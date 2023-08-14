@@ -7,6 +7,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    // ... other options ...
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["*"]
+    },
+    "moduleResolution":"node",
   }
 }

@@ -1,23 +1,20 @@
-/* Styling the tab container */
 .tab-container {
     display: flex;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
+    flex-direction: column;
+    align-items: center;
   }
   
-  /* Styling individual tab buttons */
+  .tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
   .tab-button {
-    background-color: transparent;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+    /* Your button styles */
   }
   
-  /* Styling the active tab button */
-  .tab-button.active {
-    background-color: #007bff;
-    color: #fff;
+  .tab-content {
+    /* Your content styles */
   }
   

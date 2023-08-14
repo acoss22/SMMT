@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import styles from './tab.module.scss'; // Import the CSS module
+import styles from './tab.module.scss';
 
 interface TabProps {
   tabs: string[];
@@ -27,7 +27,7 @@ const Tab: React.FC<TabProps> = ({ tabs, children }) => {
         ))}
       </div>
       <div className={styles['tab-content']}>
-        {React.Children.toArray(children)[activeTab]} {/* Render the child based on activeTab */}
+        {React.Children.toArray(children)[activeTab]}
       </div>
     </div>
   );

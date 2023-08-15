@@ -9,12 +9,28 @@ import Tasks from './components/Tabs/Tasks/DailyTasks';
 const App: React.FC = () => {
   const tabs = ['Followers', 'Tasks'];
   const [activeTab, setActiveTab] = useState(0);
-
+  const [postTweetDaily, setPostTweetDaily] = useState(false);
+  const [postInstagramStoryDaily, setPostInstagramStoryDaily] = useState(false);
+  
   const handleTabClick = (index: number) => {
     setActiveTab(index);
   };
 
-  const [postTweetDaily, setPostTweetDaily] = useState(false); // State for Tasks component
+  const tasks = [
+    {
+      id: 'tweet',
+      description: 'Post 1 tweet daily',
+      state: postTweetDaily,
+      setState: setPostTweetDaily,
+    },
+    {
+      id: 'instagramStory',
+      description: 'Post 1 Instagram story daily',
+      state: postInstagramStoryDaily,
+      setState: setPostInstagramStoryDaily,
+    },
+    // Add more tasks here
+  ];
 
   return (
     <div>
@@ -22,9 +38,7 @@ const App: React.FC = () => {
       <Tab tabs={tabs} activeTab={activeTab} handleTabClick={handleTabClick}>
         <div>
           {activeTab === 0 && <FollowerCount />}
-          {activeTab === 1 && (
-            <Tasks postTweetDaily={postTweetDaily} setPostTweetDaily={setPostTweetDaily} />
-          )}
+          {activeTab === 1 && <Tasks tasks={tasks} />}
         </div>
       </Tab>
       <Footer copyright="2023 Ana Sequeira" />

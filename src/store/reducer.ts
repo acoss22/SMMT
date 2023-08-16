@@ -60,6 +60,11 @@ const tabSlice = createSlice({
         task.isChecked = !task.isChecked;
       }
     },
+    addSocialMedia: (state, action: PayloadAction<{ platform: string; count: number }>) => {
+      const { platform, count } = action.payload;
+      state.followers[platform] = count;
+      state.lastUpdated = new Date().toLocaleString();
+    },
   },
 });
 
@@ -68,6 +73,6 @@ export interface UpdateFollowerActionPayload {
   count: number;
 }
 
-export const { setActiveTab, updateFollowerCount, toggleTaskChecked } = tabSlice.actions;
+export const { setActiveTab, updateFollowerCount, toggleTaskChecked, addSocialMedia } = tabSlice.actions;
 
 export default tabSlice.reducer;

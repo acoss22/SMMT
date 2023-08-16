@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFollowerCount } from '../../../store/reducer';
+import { updateFollowerCount, addSocialMedia } from '../../../store/reducer'; // Import the new action creator
 import { RootState } from '../../../store/store';
 import styles from './followercount.module.scss';
 
@@ -10,6 +10,10 @@ const FollowerCount: React.FC = () => {
   // Access the followers and lastUpdated properties from the tabReducer state
   const followers = useSelector((state: RootState) => state.followers);
   const lastUpdated = useSelector((state: RootState) => state.lastUpdated);
+
+  // State for the new social media input
+  const [newPlatform, setNewPlatform] = useState('');
+  const [newCount, setNewCount] = useState(0);
 
   useEffect(() => {
     // Dispatch the action to initialize followers (if needed)
@@ -21,6 +25,13 @@ const FollowerCount: React.FC = () => {
   const handleFollowerChange = (platform: string, value: number) => {
     // Dispatch the action to update follower count
     dispatch(updateFollowerCount({ platform, count: value }));
+  };
+
+  const handleAddSocialMedia = () => {
+    // Dispatch the action to add a new social media item
+    dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
+    setNewPlatform('');
+    setNewCount(0);
   };
 
   return (
@@ -41,6 +52,22 @@ const FollowerCount: React.FC = () => {
             </p>
           </div>
         ))}
+      </div>
+      <div className={styles['add-social-media']}>
+        <input
+        className={styles['add-social-media-input']}
+          placeholder="New Platform"
+          value={newPlatform}
+          onChange={e => setNewPlatform(e.target.value)}
+        />
+        <input
+          className={styles['add-social-media-count']}
+          placeholder="Follower Count"
+          type="number"
+          value={newCount}
+          onChange={e => setNewCount(parseInt(e.target.value))}
+        />
+        <button  className={styles['add-social-media-button']} onClick={handleAddSocialMedia}>Add Social Media</button>
       </div>
       <p>Last updated at {lastUpdated}</p>
     </div>

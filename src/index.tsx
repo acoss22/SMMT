@@ -1,8 +1,12 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
-const rootElement = document.getElementById('root');
+library.add(fas);
+
+const rootElement = document.getElementById("root");
 
 if (rootElement) {
   const root = createRoot(rootElement);

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFollowerCount, addSocialMedia, deleteSocialMedia } from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
 import { RootState } from "../../../store/store";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styles from "./followercount.module.scss";
 
 const FollowerCount: React.FC = () => {
@@ -63,12 +65,12 @@ const FollowerCount: React.FC = () => {
                   }
                 }}
               />
-              Followers
+              <p className={styles.platform}>Followers</p>
               <button
-                className={styles["delete-social-button"]}
+              className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
                 onClick={() => handleDeleteSocialMedia(platform)}
               >
-                Delete
+               <FontAwesomeIcon icon={faTrash} />
               </button>
             </p>
           </div>

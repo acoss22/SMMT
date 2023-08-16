@@ -20,6 +20,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
 
       .social-item h3 {
         margin-top: 0;
@@ -36,18 +37,30 @@
         margin-right: 5px;
       }
 
+      .platform {
+        margin-left: 5px;
+      }
+
       .input-checkbox {
         width: 40px; /* Adjust the width to make it more squared */
         height: 40px; /* Adjust the height to make it more squared */
         margin: 0;
         padding: 0;
-
         border: 1px solid #ccc; /* Add border for checkbox appearance */
         cursor: pointer;
         font-size: 20px;
+        margin-left: 5px;
+      }
+
+      .bottom-right-icon {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        transform: translate(50%, 50%); // Center the icon within the button
       }
     }
   }
+
   .add-social-media {
     display: flex;
     margin-top: 10px;
@@ -69,9 +82,14 @@
     }
 
     .add-social-media-button {
-      height: 30px; 
+      height: 32.5px;
       margin-left: 10px;
       font-size: 20px;
     }
+  }
+}
+@media (max-width: 768px) {
+  .social-list {
+    justify-content: center;
   }
 }

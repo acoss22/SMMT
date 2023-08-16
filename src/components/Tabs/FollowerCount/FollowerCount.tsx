@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFollowerCount, addSocialMedia, deleteSocialMedia } from "../../../store/reducer";
+import { updateFollowerCount, addSocialMedia, deleteSocialMedia } from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
 import { RootState } from "../../../store/store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +35,7 @@ const FollowerCount: React.FC = () => {
   };
 
   const handleDeleteSocialMedia = (platform: string) => {
-    dispatch(deleteSocialMedia(platform));
+    dispatch(deleteSocialMedia(platform)); // Call the deleteSocialMedia action creator with the platform to be deleted
   };
 
   return (
@@ -65,19 +65,38 @@ const FollowerCount: React.FC = () => {
                   }
                 }}
               />
-              <p className={styles.platform}>Followers</p>
-            </div>
-            <button
+              
+              <div className={styles.platform}>Followers</div>
+              <button
               className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
-              onClick={() => handleDeleteSocialMedia(platform)}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+                onClick={() => handleDeleteSocialMedia(platform)}
+              >
+               <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </div>
           </div>
         ))}
       </div>
       <div className={styles["add-social-media"]}>
-        {/* ... */}
+        <input
+          className={styles["add-social-media-input"]}
+          placeholder="New Platform"
+          value={newPlatform}
+          onChange={(e) => setNewPlatform(e.target.value)}
+        />
+        <input
+          className={styles["add-social-media-count"]}
+          placeholder="Follower Count"
+          type="number"
+          value={newCount}
+          onChange={(e) => setNewCount(parseInt(e.target.value))}
+        />
+        <button
+          className={styles["add-social-media-button"]}
+          onClick={handleAddSocialMedia}
+        >
+          Add Social Media
+        </button>
       </div>
       <p>Last updated at {lastUpdated}</p>
     </div>

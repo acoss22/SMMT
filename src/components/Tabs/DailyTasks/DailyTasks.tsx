@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './dailytasks.module.scss';
+import React from "react";
+import styles from "./dailytasks.module.scss";
 
 interface Task {
   id: string;
@@ -14,19 +14,21 @@ interface TasksProps {
 
 const Tasks: React.FC<TasksProps> = ({ tasks }) => {
   return (
-    <div className={styles['tab2-content']}>
+    <div className={styles["tab2-content"]}>
       <h2>Tasks</h2>
-      {tasks.map(task => (
-        <label key={task.id} className={styles['task-checkbox-label']}>
-          <input
-            type="checkbox"
-            className={styles['task-checkbox']}
-            checked={task.state}
-            onChange={e => task.setState(e.target.checked)}
-          />
-          {task.description}
-        </label>
-      ))}
+      <div className={styles["checkbox-list-content"]}>
+        {tasks.map((task) => (
+          <label key={task.id} className={styles["task-checkbox-label"]}>
+            <input
+              type="checkbox"
+              className={styles["task-checkbox"]}
+              checked={task.state}
+              onChange={(e) => task.setState(e.target.checked)}
+            />
+            {task.description}
+          </label>
+        ))}
+      </div>
     </div>
   );
 };

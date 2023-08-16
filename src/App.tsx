@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './styles.scss';
 import Footer from './components/Footer/Footer';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import FollowerCount from './components/Tabs/FollowerCount/FollowerCount';
 import Tab from './components/Tabs/Tab';
-import Tasks from './components/Tabs/Tasks/DailyTasks';
+import Tasks from './components/Tabs/DailyTasks/DailyTasks';
 
 const App: React.FC = () => {
   const tabs = ['Followers', 'Tasks'];

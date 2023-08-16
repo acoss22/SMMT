@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './footer.module.scss';
 
 interface FooterProps {
   copyright: string;
@@ -6,7 +7,7 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ copyright }) => {
   return (
-    <footer className='footer'>
+    <footer className={styles.footer}>
       <p>&copy; {copyright}</p>
     </footer>
   );

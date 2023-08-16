@@ -18,7 +18,7 @@ const Tab: React.FC<TabProps> = ({ tabs, activeTab, handleTabClick, children }) 
             className={`${styles['tab-button']} ${index === activeTab ? styles['active'] : ''}`}
             onClick={() => handleTabClick(index)}
           >
-            {tab}
+           <h2>{tab}</h2> 
           </button>
         ))}
       </div>

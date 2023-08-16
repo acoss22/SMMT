@@ -19,7 +19,17 @@ interface SocialMediaFollowers {
 
 const initialState: TabState = {
   activeTab: 0,
-  tasks: [{ id: "instaStory", description: "Make an Instagram Story", isChecked: false }],
+  tasks: [
+    { id: "instaStory", description: "Make an Instagram Story", isChecked: false },
+    { id: "instaPost", description: "Make an Instagram Post", isChecked: false },
+    { id: "twitterPost", description: "Make a Twitter Post", isChecked: false },
+    { id: "YoutubeShort", description: "Make a Youtube Short", isChecked: false },
+    { id: "InstagramReel", description: "Make an Instagram Reel", isChecked: false },
+    { id: "YoutubeVideo", description: "Make a Youtube Video", isChecked: false },
+    { id: "TwitchStream", description: "Make a Twitch Stream", isChecked: false },
+    { id: "FacebookPost", description: "Make a Facebook Post", isChecked: false },
+    { id: "LinkedinPost", description: "Make a Linkedin Post", isChecked: false },
+],
   followers: {
     Facebook: 45,
     Instagram: 10,

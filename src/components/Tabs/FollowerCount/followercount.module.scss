@@ -7,12 +7,12 @@
 
   .social-list {
     padding: 2rem;
-    display: flex; /* Added this line to make items display horizontally */
+    display: flex;
     flex-wrap: wrap;
 
     .social-item {
       font-size: 20px;
-      width: auto; /* Adjusted width to fit content tightly */
+      width: auto;
       margin: 10px;
       padding: 20px;
       border: 1px solid #ccc;
@@ -21,6 +21,7 @@
       flex-direction: column;
       align-items: center;
       position: relative;
+      height: 170px;
 
       .social-item h3 {
         margin-top: 0;
@@ -39,15 +40,22 @@
 
       .platform {
         margin-left: 5px;
+        align-items: center;
+        margin-top: 10px;
+        font-size: 18px;
+
+        svg {
+          margin-right: 10px; 
+          font-size: 24px; 
+        }
       }
 
       .input-checkbox {
-        width: 40px; /* Adjust the width to make it more squared */
-        height: 40px; /* Adjust the height to make it more squared */
+        width: 40px; 
+        height: 40px; 
         margin: 0;
         padding: 0;
-        border: 1px solid #ccc; /* Add border for checkbox appearance */
-        cursor: pointer;
+        border: 1px solid #ccc; 
         font-size: 20px;
         margin-left: 5px;
       }
@@ -56,7 +64,7 @@
         position: absolute;
         bottom: 1rem;
         right: 1rem;
-        transform: translate(50%, 50%); // Center the icon within the button
+        transform: translate(50%, 50%);
       }
     }
   }
@@ -66,16 +74,16 @@
     margin-top: 10px;
 
     .add-social-media-input {
-      width: 250px; /* Adjust the width to make it more squared */
-      height: 30px; /* Adjust the height to make it more squared */
+      width: 250px; 
+      height: 30px; 
       margin: 0;
       padding: 0;
       font-size: 20px;
     }
 
     .add-social-media-count {
-      width: 50px; /* Adjust the width to make it more squared */
-      height: 30px; /* Adjust the height to make it more squared */
+      width: 50px; 
+      height: 30px; 
       margin-left: 10px;
       padding: 0;
       font-size: 20px;

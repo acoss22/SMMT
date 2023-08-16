@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFollowerCount, addSocialMedia, deleteSocialMedia } from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
+import {
+  updateFollowerCount,
+  addSocialMedia,
+  deleteSocialMedia,
+} from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
 import { RootState } from "../../../store/store";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFacebookF, faInstagram, faYoutube, faLinkedinIn, faTwitter, faTwitch, IconDefinition } from '@fortawesome/free-brands-svg-icons';
+
 import styles from "./followercount.module.scss";
 
 const FollowerCount: React.FC = () => {
@@ -13,6 +19,15 @@ const FollowerCount: React.FC = () => {
   const lastUpdated = useSelector((state: RootState) => state.lastUpdated);
   const [newPlatform, setNewPlatform] = useState("");
   const [newCount, setNewCount] = useState(0);
+
+  const platformIcons: { [key: string]: IconDefinition } = {
+    Facebook: faFacebookF,
+    Instagram: faInstagram,
+    Youtube: faYoutube,
+    Linkedin: faLinkedinIn,
+    Twitter: faTwitter,
+    Twitch: faTwitch,
+  };
 
   useEffect(() => {
     dispatch(
@@ -65,13 +80,16 @@ const FollowerCount: React.FC = () => {
                   }
                 }}
               />
-              
-              <div className={styles.platform}>Followers</div>
+
+              <div className={styles.platform}>
+                <FontAwesomeIcon icon={platformIcons[platform]} />
+                Followers
+              </div>
               <button
-              className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
+                className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
                 onClick={() => handleDeleteSocialMedia(platform)}
               >
-               <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>
           </div>

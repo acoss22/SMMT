@@ -28,7 +28,7 @@ const FollowerCount: React.FC = () => {
     <>
       <div className={styles['tab2-content']}>
         <h2>Follower Count</h2>
-      </div>
+   
       <div className={styles['social-list']}>
         {Object.keys(followers).map(platform => (
           <div key={platform} className={styles['social-item']}>
@@ -43,6 +43,7 @@ const FollowerCount: React.FC = () => {
             </p>
           </div>
         ))}
+      </div>
       </div>
     </>
   );

@@ -18,6 +18,7 @@ const Tasks: React.FC<TasksProps> = ({ tasks }) => {
       <h2>Tasks</h2>
       <div className={styles["checkbox-list-content"]}>
         {tasks.map((task) => (
+          <div className={styles["list-item"]}>
           <label key={task.id} className={styles["task-checkbox-label"]}>
             <input
               type="checkbox"
@@ -27,6 +28,7 @@ const Tasks: React.FC<TasksProps> = ({ tasks }) => {
             />
             {task.description}
           </label>
+          </div>
         ))}
       </div>
     </div>

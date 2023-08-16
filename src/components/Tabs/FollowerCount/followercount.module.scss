@@ -1,26 +1,26 @@
-.social-list {
+.tab2-content {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .social-list {
+    padding: 2rem;
     display: flex;
     flex-wrap: wrap;
-    padding: 2rem;
+
+    .social-item {
+      font-size: 20px;
+      width: 200px;
+      margin: 10px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
   }
-  
-  .social-item {
-    width: 200px;
-    margin: 10px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  
-  .tab2-content {
-    background-color: #f8f8f8;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
+
   .tab2-content h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
   }
-  
+}

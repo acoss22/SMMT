@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [postTweetDaily, setPostTweetDaily] = useState(false);
   const [postInstagramStoryDaily, setPostInstagramStoryDaily] = useState(false);
+  const [postInstagramPostWeekly, setPostInstagramPostWeekly] = useState(false);
   
   const handleTabClick = (index: number) => {
     setActiveTab(index);
@@ -29,7 +30,12 @@ const App: React.FC = () => {
       state: postInstagramStoryDaily,
       setState: setPostInstagramStoryDaily,
     },
-    // Add more tasks here
+    {
+      id: 'instagramPost',
+      description: 'Post 1 weekly Instagram post',
+      state: postInstagramPostWeekly,
+      setState: setPostInstagramPostWeekly,
+    },
   ];
 
   return (

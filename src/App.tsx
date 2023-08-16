@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Header from './components/Header/Header';
 import Tab from './components/Tabs/Tab';
-import Footer from './components/Footer/Footer';
+import Footer from './components/Header/Footer/Footer';
 import store from './store/store'; // Import the store
 
 const App: React.FC = () => {

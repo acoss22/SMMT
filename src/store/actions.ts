@@ -4,6 +4,8 @@ import { Action } from 'redux';
 // Define action types
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 export const TOGGLE_TASK_STATE = 'TOGGLE_TASK_STATE';
+export const DELETE_SOCIAL_MEDIA = 'DELETE_SOCIAL_MEDIA'; // Add this line
+export const UPDATE_FOLLOWER_COUNT = 'UPDATE_FOLLOWER_COUNT'; // Add this line
 
 // Define action interfaces
 interface SetActiveTabAction extends Action<typeof SET_ACTIVE_TAB> {

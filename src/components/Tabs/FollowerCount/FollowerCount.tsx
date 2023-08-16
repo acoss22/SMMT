@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFollowerCount } from '../../../store/reducer';
+import { RootState } from '../../../store/store';
 import styles from './followercount.module.scss';
 
-type SocialMediaFollowers = {
-  [platform: string]: number;
-};
-
-const initialFollowers: SocialMediaFollowers = {
-  Facebook: 5,
-  Instagram: 10,
-  Youtube: 5,
-  Linkedin: 15,
-  Twitter: 15,
-  Twitch: 15,
-};
-
 const FollowerCount: React.FC = () => {
-  const [followers, setFollowers] = useState<SocialMediaFollowers>(initialFollowers);
+  const dispatch = useDispatch();
+
+  // Access the followers and lastUpdated properties from the tabReducer state
+  const followers = useSelector((state: RootState) => state.followers);
+  const lastUpdated = useSelector((state: RootState) => state.lastUpdated);
+
+  useEffect(() => {
+    // Dispatch the action to initialize followers (if needed)
+    dispatch(updateFollowerCount({ platform: 'Facebook', count: followers.Facebook }));
+    dispatch(updateFollowerCount({ platform: 'Instagram', count: followers.Instagram }));
+    // ... repeat for other platforms
+  }, [dispatch, followers]);
 
   const handleFollowerChange = (platform: string, value: number) => {
-    setFollowers(prevFollowers => ({
-      ...prevFollowers,
-      [platform]: value,
-    }));
+    // Dispatch the action to update follower count
+    dispatch(updateFollowerCount({ platform, count: value }));
   };
 
   return (
-    <>
-      <div className={styles['tab2-content']}>
-        <h2>Follower Count</h2>
-   
+    <div className={styles['tab2-content']}>
+      <h2>Follower Count</h2>
       <div className={styles['social-list']}>
         {Object.keys(followers).map(platform => (
           <div key={platform} className={styles['social-item']}>
             <h3>{platform}</h3>
-            <p>
+            <p className={styles['input-container']}>
               <input
+                className={styles['input-checkbox']}
                 type="number"
                 value={followers[platform]}
                 onChange={e => handleFollowerChange(platform, parseInt(e.target.value))}
@@ -44,8 +42,8 @@ const FollowerCount: React.FC = () => {
           </div>
         ))}
       </div>
-      </div>
-    </>
+      <p>Last updated at {lastUpdated}</p>
+    </div>
   );
 };
 

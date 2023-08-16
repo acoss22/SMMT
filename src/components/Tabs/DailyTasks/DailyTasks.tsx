@@ -1,33 +1,32 @@
-import React from "react";
-import styles from "./dailytasks.module.scss";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import styles from './dailytasks.module.scss';
+import { RootState } from 'store/store';
+import { toggleTaskChecked } from '../../../store/reducer';
 
-interface Task {
-  id: string;
-  description: string;
-  state: boolean;
-  setState: (value: boolean) => void;
-}
+const DailyTasks: React.FC = () => {
+  const tasks = useSelector((state: RootState) => state.tasks);
+  const dispatch = useDispatch();
 
-interface TasksProps {
-  tasks: Task[];
-}
+  const handleTaskToggle = (taskId: string) => {
+    dispatch(toggleTaskChecked(taskId)); // Add this dispatch to toggle isChecked value
+  };
 
-const Tasks: React.FC<TasksProps> = ({ tasks }) => {
   return (
-    <div className={styles["tab2-content"]}>
+    <div className={styles['tab2-content']}>
       <h2>Tasks</h2>
-      <div className={styles["checkbox-list-content"]}>
-        {tasks.map((task) => (
-          <div className={styles["list-item"]}>
-          <label key={task.id} className={styles["task-checkbox-label"]}>
-            <input
-              type="checkbox"
-              className={styles["task-checkbox"]}
-              checked={task.state}
-              onChange={(e) => task.setState(e.target.checked)}
-            />
-            {task.description}
-          </label>
+      <div className={styles['checkbox-list-content']}>
+        {tasks.map(task => (
+          <div className={styles['list-item']} key={task.id}>
+            <label className={styles['task-checkbox-label']}>
+              <input
+                type="checkbox"
+                className={styles['task-checkbox']}
+                checked={task.isChecked}
+                onChange={() => handleTaskToggle(task.id)}
+              />
+              {task.description}
+            </label>
           </div>
         ))}
       </div>
@@ -35,4 +34,4 @@ const Tasks: React.FC<TasksProps> = ({ tasks }) => {
   );
 };
 
-export default Tasks;
+export default DailyTasks;

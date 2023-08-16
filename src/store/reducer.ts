@@ -38,7 +38,7 @@ const initialState: TabState = {
     Twitter: 15,
     Twitch: 15,
   },
-  lastUpdated: '', // Initialize lastUpdated as an empty string
+  lastUpdated: '',
 };
 
 const tabSlice = createSlice({

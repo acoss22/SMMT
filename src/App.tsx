@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer';
 import store from './store/store'; // Import the store
 
 const App: React.FC = () => {
-  const tabs: string[] = ['Followers', 'Tasks'];
+  const tabs: string[] = ['Followers', 'Tasks', 'Activity'];
 
   return (
     <Provider store={store}>

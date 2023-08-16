@@ -10,12 +10,20 @@ interface TabState {
   activeTab: number;
   tasks: Task[];
   followers: SocialMediaFollowers;
-  lastUpdated: string; // Add the lastUpdated property
+  lastUpdated: string; 
+  followerHistory: FollowerHistory[];
+}
+interface FollowerHistory {
+  platform: string;
+  count: number;
+  timestamp: string;
 }
 
 interface SocialMediaFollowers {
   [platform: string]: number;
 }
+
+
 
 const initialState: TabState = {
   activeTab: 0,
@@ -39,6 +47,7 @@ const initialState: TabState = {
     Twitch: 15,
   },
   lastUpdated: '',
+  followerHistory: []
 };
 
 const tabSlice = createSlice({
@@ -50,8 +59,12 @@ const tabSlice = createSlice({
     },
     updateFollowerCount: (state, action: PayloadAction<UpdateFollowerActionPayload>) => {
       const { platform, count } = action.payload;
+      const prevCount = state.followers[platform];
       state.followers[platform] = count;
-      state.lastUpdated = new Date().toLocaleString(); // Update lastUpdated when follower count is updated
+      state.lastUpdated = new Date().toLocaleString();
+    
+      // Add the follower count change to history
+      state.followerHistory.push({ platform, count, timestamp: state.lastUpdated });
     },
     toggleTaskChecked: (state, action: PayloadAction<string>) => {
       const taskId = action.payload;
@@ -65,6 +78,7 @@ const tabSlice = createSlice({
       state.followers[platform] = count;
       state.lastUpdated = new Date().toLocaleString();
     },
+    
   },
 });
 

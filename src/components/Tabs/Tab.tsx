@@ -6,6 +6,7 @@ import styles from './tab.module.scss';
 import FollowerCount from './FollowerCount/FollowerCount';
 import DailyTasks from './DailyTasks/DailyTasks';
 import { RootState } from 'store/store';
+import ActivityLogs from './ActivityLogs/ActivityLogs';
 
 interface TabProps {
   tabs: string[];
@@ -36,8 +37,9 @@ const Tab: React.FC<TabProps> = ({ tabs }) => {
       </div>
       <div className={styles['tab-content']}>
         {/* Render content based on activeTab */}
-        {activeTab === 0 && <FollowerCount />} {/* Import FollowerCount and adjust the condition */}
-        {activeTab === 1 && <DailyTasks />} {/* Adjust the condition for your Tasks component */}
+        {activeTab === 0 && <FollowerCount />} 
+        {activeTab === 1 && <DailyTasks />}
+        {activeTab === 2 && <ActivityLogs />}
       </div>
     </div>
   );

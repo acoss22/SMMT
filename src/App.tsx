@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import store from "./store/store"; // Import the store
 import styles from './app.module.scss';
+import './styles.scss';
 
 const Tab = lazy(() => import("./components/Tabs/Tab")); // Lazy load Tab component
 

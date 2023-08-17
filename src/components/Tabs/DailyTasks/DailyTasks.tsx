@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './dailytasks.module.scss';
 import { RootState } from 'store/store';
@@ -8,9 +8,9 @@ const DailyTasks: React.FC = () => {
   const tasks = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch();
 
-  const handleTaskToggle = (taskId: string) => {
-    dispatch(toggleTaskChecked(taskId)); // Add this dispatch to toggle isChecked value
-  };
+  const handleTaskToggle = useCallback((taskId: string) => {
+    dispatch(toggleTaskChecked(taskId));
+  }, [dispatch]);
 
   return (
     <div className={styles['tab2-content']}>

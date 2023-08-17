@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateFollowerCount,
@@ -29,30 +29,28 @@ const FollowerCount: React.FC = () => {
     Twitch: faTwitch,
   };
 
-  useEffect(() => {
-    dispatch(
-      updateFollowerCount({ platform: "Facebook", count: followers.Facebook })
-    );
-    dispatch(
-      updateFollowerCount({ platform: "Instagram", count: followers.Instagram })
-    );
-  }, [dispatch, followers]);
+  const handleFollowerChange = useCallback(
+    (platform: string, value: number) => {
+      const newValue = Math.max(0, value);
+      dispatch(updateFollowerCount({ platform, count: newValue }));
+    },
+    [dispatch]
+  );
 
-  const handleFollowerChange = (platform: string, value: number) => {
-    const newValue = Math.max(0, value);
-    dispatch(updateFollowerCount({ platform, count: newValue }));
-  };
-
-  const handleAddSocialMedia = () => {
+  const handleAddSocialMedia = useCallback(() => {
     dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
     setNewPlatform("");
     setNewCount(0);
-  };
+  }, [dispatch, newPlatform, newCount]);
 
-  const handleDeleteSocialMedia = (platform: string) => {
-    dispatch(deleteSocialMedia(platform)); // Call the deleteSocialMedia action creator with the platform to be deleted
-  };
+  const handleDeleteSocialMedia = useCallback(
+    (platform: string) => {
+      dispatch(deleteSocialMedia(platform));
+    },
+    [dispatch]
+  );
 
+  const memoizedPlatformIcons = useMemo(() => platformIcons, []);
   return (
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
@@ -82,7 +80,7 @@ const FollowerCount: React.FC = () => {
               />
 
               <div className={styles.platform}>
-                <FontAwesomeIcon icon={platformIcons[platform]} />
+                <FontAwesomeIcon icon={memoizedPlatformIcons[platform]} />
                 Followers
               </div>
               <button

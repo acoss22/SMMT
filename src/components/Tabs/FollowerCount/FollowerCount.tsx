@@ -47,15 +47,23 @@ const FollowerCount: React.FC = () => {
   );
 
   const handleAddSocialMedia = useCallback(() => {
+    console.log(newPlatform);
     if (newPlatform.trim() !== "") {
+      setIsPlatformEmpty(false);
       // Check if the platform name is not empty after trimming
       dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
       setNewPlatform("");
       setNewCount(0);
+      console.log("if")
+      console.log(isPlatformEmpty)
     } else {
       setIsPlatformEmpty(true);
+      console.log("else")
+      console.log(isPlatformEmpty)
+     
+
     }
-  }, [dispatch, newPlatform, newCount]);
+  }, [dispatch, newPlatform, newCount, isPlatformEmpty]);
 
   const handleDeleteSocialMedia = useCallback(
     (platform: string) => {
@@ -112,7 +120,7 @@ const FollowerCount: React.FC = () => {
       <div className={styles["add-social-media"]}>
         <input
           className={`${styles["add-social-media-input"]} ${
-            isPlatformEmpty ? "red-border" : ""
+            isPlatformEmpty ? styles["red-border"] : ""
           }`}
           placeholder="New Platform"
           value={newPlatform}

@@ -9,7 +9,29 @@
     color: white;
     text-align: center;
     line-height: 100px;
+    border: 0;
+    margin: 0;
+    padding: 0;
   
     /* Add other styling as needed */
   }
   
+  
+/* Responsive Styles */
+@media (max-width: 768px) {
+  /* Adjust styles for screens up to 768px width */
+  .footer {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Adjust styles for screens up to 480px width */
+  .footer {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}

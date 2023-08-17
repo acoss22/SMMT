@@ -12,6 +12,9 @@
   line-height: 100px;
   overflow: hidden;
   z-index: 1;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Responsive Styles */
@@ -21,6 +24,9 @@
     height: 80px;
     line-height: 80px;
     font-size: 10px;
+    border: 0;
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -30,5 +36,8 @@
     min-height: 80px;
     line-height: 60px;
     font-size: 10px;
+    border: 0;
+    margin: 0;
+    padding: 0;
   }
 }

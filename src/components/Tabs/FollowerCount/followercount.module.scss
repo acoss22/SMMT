@@ -3,7 +3,8 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+  padding-bottom: 120px;
+
   .social-list {
     padding: 2rem;
     display: flex;
@@ -22,7 +23,7 @@
       position: relative;
       min-height: 170px;
       min-width: 220px;
-  
+
       .social-item h3 {
         margin-top: 0;
       }
@@ -45,17 +46,17 @@
         font-size: 18px;
 
         svg {
-          margin-right: 10px; 
-          font-size: 24px; 
+          margin-right: 10px;
+          font-size: 24px;
         }
       }
 
       .input-checkbox {
-        width: 40px; 
-        height: 40px; 
+        width: 40px;
+        height: 40px;
         margin: 0;
         padding: 0;
-        border: 1px solid #ccc; 
+        border: 1px solid #ccc;
         font-size: 20px;
         margin-left: 5px;
       }
@@ -68,53 +69,64 @@
       }
     }
   }
-
   .add-social-media {
     display: flex;
     margin-top: 10px;
-   
+    font-size: 20px; /* Add font-size to match */
 
     .add-social-media-input {
-      width: 250px; 
-      height: 30px; 
+      width: 250px;
+      height: 30px;
       margin: 0;
       padding: 0;
       font-size: 20px;
     }
 
     .add-social-media-count {
-      width: 50px; 
-      height: 30px; 
+      width: 50px;
+      height: 30px;
       margin-left: 10px;
       padding: 0;
-      font-size: 20px;
+      font-size: inherit; /* Inherit font-size */
     }
 
     .add-social-media-button {
       height: 32.5px;
       margin-left: 10px;
+      font-size: inherit; /* Inherit font-size */
+    }
+    .add-social-media-input {
+      width: 250px;
+      height: 30px;
+      margin: 0;
+      padding: 0;
       font-size: 20px;
-      padding-bottom: 20px;
+    }
+
+    .add-social-media-input:hover {
+      border-color: #888; /* Add hover effect */
     }
   }
-
-  .bottom-text{
+  .bottom-text {
     height: 100px;
   }
-
 }
 @media (max-width: 768px) {
-
   .tab2-content {
     display: flex;
     flex-direction: column;
   }
 
-  h2{
+  h2 {
     align-self: center;
   }
 
-  .add-social-media{
+  .social-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .add-social-media {
     justify-content: space-around;
     margin: 10px;
     padding: 32px;
@@ -126,13 +138,15 @@
     min-height: 120px;
     margin-bottom: 2rem;
     justify-content: space-between;
-    
   }
 
-  .add-social-media-input{
-   margin-bottom: 2rem;
-   padding-bottom: 2rem;
+  .add-social-media-button {
+    margin-bottom: 30px;
+  }
 
+  .checkbox-line {
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .social-list {

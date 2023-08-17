@@ -7,8 +7,16 @@ import {
 } from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
 import { RootState } from "../../../store/store";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faInstagram, faYoutube, faLinkedinIn, faTwitter, faTwitch, IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagram,
+  faYoutube,
+  faLinkedinIn,
+  faTwitter,
+  faTwitch,
+  IconDefinition,
+} from "@fortawesome/free-brands-svg-icons";
 
 import styles from "./followercount.module.scss";
 
@@ -101,13 +109,14 @@ const FollowerCount: React.FC = () => {
           onChange={(e) => setNewPlatform(e.target.value)}
         />
         <div className={styles["checkbox-line"]}>
-        <input
-          className={styles["add-social-media-count"]}
-          placeholder="Follower Count"
-          type="number"
-          value={newCount}
-          onChange={(e) => setNewCount(parseInt(e.target.value))}
-        /> Followers
+          <input
+            className={styles["add-social-media-count"]}
+            placeholder="Follower Count"
+            type="number"
+            value={newCount}
+            onChange={(e) => setNewCount(parseInt(e.target.value))}
+          />{" "}
+          Followers
         </div>
         <button
           className={styles["add-social-media-button"]}
@@ -116,7 +125,6 @@ const FollowerCount: React.FC = () => {
           Add Social Media
         </button>
       </div>
-      <p>Last updated at {lastUpdated}</p>
     </div>
   );
 };

@@ -4,17 +4,35 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 100px; /* Set the desired footer height */
+    height: 100px;
     background-color: #333;
     color: white;
     text-align: center;
     line-height: 100px;
+    margin-top: 20px; /* Add margin to create space between content and footer */
+    box-sizing: border-box; /* Add box sizing for consistent height calculation */
+  }
+  
+  
+  
+/* Responsive Styles */
+@media (max-width: 768px) {
+  /* Adjust styles for screens up to 768px width */
+  .footer {
     border: 0;
     margin: 0;
     padding: 0;
-  
-    /* Add other styling as needed */
   }
+}
+
+@media (max-width: 480px) {
+  /* Adjust styles for screens up to 480px width */
+  .footer {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
   
   
 /* Responsive Styles */

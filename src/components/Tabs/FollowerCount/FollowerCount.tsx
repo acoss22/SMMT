@@ -27,6 +27,7 @@ const FollowerCount: React.FC = () => {
   const lastUpdated = useSelector((state: RootState) => state.lastUpdated);
   const [newPlatform, setNewPlatform] = useState("");
   const [newCount, setNewCount] = useState(0);
+  const [isPlatformEmpty, setIsPlatformEmpty] = useState(false);
 
   const platformIcons: { [key: string]: IconDefinition } = {
     Facebook: faFacebookF,
@@ -46,9 +47,14 @@ const FollowerCount: React.FC = () => {
   );
 
   const handleAddSocialMedia = useCallback(() => {
-    dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
-    setNewPlatform("");
-    setNewCount(0);
+    if (newPlatform.trim() !== "") {
+      // Check if the platform name is not empty after trimming
+      dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
+      setNewPlatform("");
+      setNewCount(0);
+    } else {
+      setIsPlatformEmpty(true);
+    }
   }, [dispatch, newPlatform, newCount]);
 
   const handleDeleteSocialMedia = useCallback(
@@ -88,7 +94,9 @@ const FollowerCount: React.FC = () => {
               />
 
               <div className={styles.platform}>
-                <FontAwesomeIcon icon={memoizedPlatformIcons[platform]} />
+                {memoizedPlatformIcons[platform] && (
+                  <FontAwesomeIcon icon={memoizedPlatformIcons[platform]} />
+                )}
                 Followers
               </div>
               <button
@@ -103,10 +111,15 @@ const FollowerCount: React.FC = () => {
       </div>
       <div className={styles["add-social-media"]}>
         <input
-          className={styles["add-social-media-input"]}
+          className={`${styles["add-social-media-input"]} ${
+            isPlatformEmpty ? "red-border" : ""
+          }`}
           placeholder="New Platform"
           value={newPlatform}
-          onChange={(e) => setNewPlatform(e.target.value)}
+          onChange={(e) => {
+            setNewPlatform(e.target.value);
+            setIsPlatformEmpty(e.target.value.trim() === ""); // Update flag
+          }}
         />
         <div className={styles["checkbox-line"]}>
           <input

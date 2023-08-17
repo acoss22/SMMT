@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateFollowerCount,
@@ -100,13 +100,15 @@ const FollowerCount: React.FC = () => {
           value={newPlatform}
           onChange={(e) => setNewPlatform(e.target.value)}
         />
+        <div className={styles["checkbox-line"]}>
         <input
           className={styles["add-social-media-count"]}
           placeholder="Follower Count"
           type="number"
           value={newCount}
           onChange={(e) => setNewCount(parseInt(e.target.value))}
-        />
+        /> Followers
+        </div>
         <button
           className={styles["add-social-media-button"]}
           onClick={handleAddSocialMedia}

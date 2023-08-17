@@ -4,7 +4,7 @@ import {
   updateFollowerCount,
   addSocialMedia,
   deleteSocialMedia,
-} from "../../../store/reducer"; // Make sure to import the deleteSocialMedia action creator
+} from "../../../store/reducer";
 import { RootState } from "../../../store/store";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +28,7 @@ const FollowerCount: React.FC = () => {
   const [newPlatform, setNewPlatform] = useState("");
   const [newCount, setNewCount] = useState(0);
   const [isPlatformEmpty, setIsPlatformEmpty] = useState(false);
+  const [isDuplicatePlatform, setIsDuplicatePlatform] = useState(false);
 
   const platformIcons: { [key: string]: IconDefinition } = {
     Facebook: faFacebookF,
@@ -47,23 +48,22 @@ const FollowerCount: React.FC = () => {
   );
 
   const handleAddSocialMedia = useCallback(() => {
-    console.log(newPlatform);
     if (newPlatform.trim() !== "") {
       setIsPlatformEmpty(false);
-      // Check if the platform name is not empty after trimming
-      dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
-      setNewPlatform("");
-      setNewCount(0);
-      console.log("if")
-      console.log(isPlatformEmpty)
+
+      if (!followers[newPlatform]) {
+        setIsDuplicatePlatform(false);
+
+        dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
+        setNewPlatform("");
+        setNewCount(0);
+      } else {
+        setIsDuplicatePlatform(true);
+      }
     } else {
       setIsPlatformEmpty(true);
-      console.log("else")
-      console.log(isPlatformEmpty)
-     
-
     }
-  }, [dispatch, newPlatform, newCount, isPlatformEmpty]);
+  }, [dispatch, followers, newPlatform, newCount]);
 
   const handleDeleteSocialMedia = useCallback(
     (platform: string) => {
@@ -73,6 +73,7 @@ const FollowerCount: React.FC = () => {
   );
 
   const memoizedPlatformIcons = useMemo(() => platformIcons, []);
+
   return (
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
@@ -120,15 +121,26 @@ const FollowerCount: React.FC = () => {
       <div className={styles["add-social-media"]}>
         <input
           className={`${styles["add-social-media-input"]} ${
-            isPlatformEmpty ? styles["red-border"] : ""
+            (isPlatformEmpty || isDuplicatePlatform) ? styles["red-border"] : ""
           }`}
           placeholder="New Platform"
           value={newPlatform}
           onChange={(e) => {
             setNewPlatform(e.target.value);
-            setIsPlatformEmpty(e.target.value.trim() === ""); // Update flag
+            setIsPlatformEmpty(e.target.value.trim() === "");
+            setIsDuplicatePlatform(false); // Clear duplicate flag when user types
           }}
         />
+        {isPlatformEmpty && (
+          <div className={styles["error-message"]}>
+            You can't add a nameless platform.
+          </div>
+        )}
+        {isDuplicatePlatform && (
+          <div className={styles["error-message"]}>
+            {`${newPlatform} platform is already in the list.`}
+          </div>
+        )}
         <div className={styles["checkbox-line"]}>
           <input
             className={styles["add-social-media-count"]}

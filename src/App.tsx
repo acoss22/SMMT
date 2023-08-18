@@ -44,12 +44,15 @@ const App: React.FC = () => {
     setShowSignUp(false);
   };
 
-  const handleSignUp = async (email: string, password: string) => {
+  const handleSignUp = async (email: string, password: string, preferredUsername: string) => {
     try {
       await Auth.signUp({
         username: email,
         password: password,
-        // You can provide additional attributes here if needed
+        attributes: {
+          preferred_username: preferredUsername,
+          // You can add other attributes here if needed
+        }
       });
       setIsLoggedIn(true);
     } catch (error) {

@@ -1,3 +1,6 @@
+import { Auth, Amplify } from 'aws-amplify';
+// @ts-ignore
+import awsconfig from './aws-exports';
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -6,6 +9,9 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import './styles.scss';
 
 library.add(fas);
+
+// Configure Amplify with the aws-exports.js configuration
+Amplify.configure(awsconfig);
 
 const rootElement = document.getElementById("root");
 

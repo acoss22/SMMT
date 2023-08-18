@@ -7,3 +7,51 @@
     display: flex;
     flex-direction: column;
 }
+
+/* analytics.module.scss (or separate CSS file) */
+.tab2-content {
+    margin: 20px;
+  }
+  
+  .chart-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  svg {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+  }
+  
+  .bar {
+    fill: steelblue;
+  }
+  
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  
+  .axis text {
+    font-size: 12px;
+  }
+  
+  .axis-label {
+    font-weight: bold;
+  }
+  
+  .axis-label-x {
+    text-anchor: middle;
+  }
+  
+  .axis-label-y {
+    text-anchor: middle;
+    transform: rotate(-90deg);
+  }
+  
+  .bar:hover {
+    fill: #5a8ca0;
+  }
+  

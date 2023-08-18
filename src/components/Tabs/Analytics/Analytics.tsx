@@ -60,7 +60,8 @@ const Analytics: React.FC = () => {
       .attr("x", d => x(d.timestamp) - (width - margin.left - margin.right) / data.length / 2)
       .attr("y", d => y(d.count))
       .attr("width", (width - margin.left - margin.right) / data.length)
-      .attr("height", d => y(0) - y(d.count));
+      .attr("height", d => Math.abs(y(0) - y(d.count)))
+      .style("fill", "steelblue");
 
   }, [followerHistory]);
 

@@ -53,6 +53,11 @@ const App: React.FC = () => {
     setShowSignUp(true);
   };
 
+  const handleSwitchToLogin = () => {
+    setShowSignUp(false);
+  };
+
+
   const handleSignUp = async (email: string, password: string) => {
     try {
       // Sign up the user using Cognito or your authentication method
@@ -87,7 +92,7 @@ const App: React.FC = () => {
                       onSwitchToSignUp={handleSwitchToSignUp}
                     />
                   )}
-                  {showSignUp && <SignUpForm onSignUp={handleSignUp} />}
+                  {showSignUp && <SignUpForm onSwitchToLogin={handleSwitchToLogin} onSignUp={handleSignUp} />}
                 </div>
               </div>
             )}

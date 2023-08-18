@@ -3,9 +3,10 @@ import styles from './signupform.module.scss';
 
 interface SignUpFormProps {
   onSignUp: (email: string, password: string) => void;
+  onSwitchToLogin: () => void; // New prop to handle switching to login form
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
+const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp, onSwitchToLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -38,6 +39,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
         </div>
         <button type="submit">Sign Up</button>
       </form>
+      <p className={styles["switch-link"]}>
+        Already have an account? <a href="#" onClick={onSwitchToLogin}>Log in</a>
+      </p>
     </div>
   );
 };

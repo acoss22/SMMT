@@ -49,15 +49,33 @@ const initialState: TabState = {
   followerHistory: [
     {
       platform: "Facebook",
-      prevCount: 40,
+      prevCount: 0,
+      count: 0,
+      timestamp: "6/5/2023, 11:52:55 AM",
+    },
+    {
+      platform: "Facebook",
+      prevCount: 0,
       count: 47,
-      timestamp: "8/5/2023, 11:52:55 AM",
+      timestamp: "7/5/2023, 11:52:55 AM",
+    },
+    {
+      platform: "Instagram",
+      prevCount: 0,
+      count: 0,
+      timestamp: "5/10/2023, 13:52:55 AM",
     },
     {
       platform: "Instagram",
       prevCount: 20,
       count: 27,
       timestamp: "8/10/2023, 13:52:55 AM",
+    },
+    {
+      platform: "Twitter",
+      prevCount: 0,
+      count: 0,
+      timestamp: "7/18/2023, 14:52:55 AM",
     },
     {
       platform: "Twitter",

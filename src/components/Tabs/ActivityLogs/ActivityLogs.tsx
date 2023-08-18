@@ -37,11 +37,11 @@ const ActivityLogs: React.FC = () => {
   return (
     <div className={styles["tab2-content"]}>
       <h2>Activity</h2>
-      <div className={styles['checkbox-list-content']}>
+      <div className={styles["checkbox-list-content"]}>
         {logMessages.length > 0 ? (
           logMessages.map((logMessage, index) => (
-            <div className={styles['list-item']}>
-            <p key={index}>{logMessage}</p>
+            <div className={styles["list-item"]} key={index}>
+              <p>{logMessage}</p>
             </div>
           ))
         ) : (

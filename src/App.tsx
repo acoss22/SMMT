@@ -61,15 +61,28 @@ const App: React.FC = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Handle logout error (e.g., display error message to the user)
+    }
+  };
+
   return (
     <div className={styles.main}>
-      <Header title="Social Media Management Tool" />
+      <Header title="Social Media Management Tool" onLogout={handleLogout} isLoggedIn={isLoggedIn}/>
       <Provider store={store}>
         <div>
-          <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
             {isLoggedIn ? (
-              <Tab tabs={tabs} />
+              <>
+                <Tab tabs={tabs} />
+              </>
             ) : (
+
               <div>
                 <div>
                   {!showSignUp && (

@@ -20,6 +20,9 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react": "^18.2.20",
     "chart.js": "^4.3.3",
+    "chartjs-adapter-moment": "^1.0.1",
+    "d3": "^7.8.5",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
@@ -33,6 +36,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.0",
     "@types/react-dom": "^18.2.7",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",

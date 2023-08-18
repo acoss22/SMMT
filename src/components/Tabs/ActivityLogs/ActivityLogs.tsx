@@ -6,6 +6,7 @@ import styles from "./activitylogs.module.scss";
 // Define the FollowerHistory interface
 interface FollowerHistory {
   platform: string;
+  prevCount: number;
   count: number;
   timestamp: string;
 }

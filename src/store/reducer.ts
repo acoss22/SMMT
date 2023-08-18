@@ -15,6 +15,7 @@ interface TabState {
 }
 interface FollowerHistory {
   platform: string;
+  prevCount: number;
   count: number;
   timestamp: string;
 }
@@ -47,7 +48,26 @@ const initialState: TabState = {
     Twitch: 15,
   },
   lastUpdated: '',
-  followerHistory: []
+  followerHistory: [
+    {
+      platform: "Facebook",
+      prevCount: 40,
+      count: 47,
+      timestamp: "8/18/2023, 11:52:55 AM",
+    },
+    {
+      platform: "Instagram",
+      prevCount: 20,
+      count: 27,
+      timestamp: "8/18/2023, 11:52:55 AM",
+    },
+    {
+      platform: "Twitter",
+      prevCount: 50,
+      count: 57,
+      timestamp: "8/18/2023, 11:52:55 AM",
+    },
+  ],
 };
 
 const tabSlice = createSlice({
@@ -60,15 +80,23 @@ const tabSlice = createSlice({
     updateFollowerCount: (state, action: PayloadAction<UpdateFollowerActionPayload>) => {
       const { platform, count } = action.payload;
       const prevCount = state.followers[platform];
-      
+    
       if (prevCount !== count) {
         state.followers[platform] = count;
-        state.lastUpdated = new Date().toLocaleString();        
-        // Add the follower count change to history
-        state.followerHistory.push({ platform, count, timestamp: state.lastUpdated });
+        state.lastUpdated = new Date().toLocaleString();
+    
+        // Create a new object with prevCount and other properties
+        const newFollowerHistoryEntry: FollowerHistory = {
+          platform,
+          prevCount, // Add the previous count here
+          count,
+          timestamp: state.lastUpdated,
+        };
+    
+        // Push the new object into the followerHistory array
+        state.followerHistory.push(newFollowerHistoryEntry);
       }
     },
-    
     toggleTaskChecked: (state, action: PayloadAction<string>) => {
       const taskId = action.payload;
       const task = state.tasks.find(task => task.id === taskId);

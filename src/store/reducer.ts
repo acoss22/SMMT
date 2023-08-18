@@ -6,25 +6,23 @@ interface Task {
   isChecked: boolean;
 }
 
-interface TabState {
+export interface TabState {
   activeTab: number;
   tasks: Task[];
   followers: SocialMediaFollowers;
   lastUpdated: string; 
   followerHistory: FollowerHistory[];
 }
-interface FollowerHistory {
+export interface FollowerHistory {
   platform: string;
   prevCount: number;
   count: number;
   timestamp: string;
 }
 
-interface SocialMediaFollowers {
+export interface SocialMediaFollowers {
   [platform: string]: number;
 }
-
-
 
 const initialState: TabState = {
   activeTab: 0,
@@ -53,19 +51,19 @@ const initialState: TabState = {
       platform: "Facebook",
       prevCount: 40,
       count: 47,
-      timestamp: "8/18/2023, 11:52:55 AM",
+      timestamp: "8/5/2023, 11:52:55 AM",
     },
     {
       platform: "Instagram",
       prevCount: 20,
       count: 27,
-      timestamp: "8/18/2023, 11:52:55 AM",
+      timestamp: "8/10/2023, 13:52:55 AM",
     },
     {
       platform: "Twitter",
       prevCount: 50,
       count: 57,
-      timestamp: "8/18/2023, 11:52:55 AM",
+      timestamp: "8/18/2023, 14:52:55 AM",
     },
   ],
 };

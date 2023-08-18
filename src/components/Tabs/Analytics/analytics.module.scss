@@ -7,51 +7,77 @@
     display: flex;
     flex-direction: column;
 }
+/* analytics.module.scss */
 
-/* analytics.module.scss (or separate CSS file) */
-.tab2-content {
-    margin: 20px;
+.chart-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
-  .chart-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  svg {
+  .recharts-surface {
     font-family: Arial, sans-serif;
-    font-size: 12px;
   }
   
-  .bar {
-    fill: steelblue;
+  .recharts-cartesian-grid-horizontal line {
+    stroke: #d0d0d0;
+    stroke-width: 1px;
+    stroke-dasharray: 3 3;
   }
   
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
+  .recharts-cartesian-grid-vertical line {
+    stroke: #d0d0d0;
+    stroke-width: 1px;
+    stroke-dasharray: 3 3;
   }
   
-  .axis text {
-    font-size: 12px;
-  }
-  
-  .axis-label {
+  .recharts-legend-item-text {
+    font-size: 14px;
     font-weight: bold;
   }
   
-  .axis-label-x {
-    text-anchor: middle;
+  .recharts-legend-item {
+    cursor: pointer;
   }
   
-  .axis-label-y {
-    text-anchor: middle;
-    transform: rotate(-90deg);
+  .recharts-tooltip {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  .bar:hover {
-    fill: #5a8ca0;
+  .recharts-tooltip-label {
+    margin-bottom: 5px;
+    font-weight: bold;
   }
+  
+  .recharts-tooltip-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .recharts-tooltip-item-name {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+  
+  .recharts-tooltip-item-value {
+    font-weight: bold;
+  }
+  
+  .recharts-legend-item-active .recharts-legend-item-text {
+    font-weight: bold;
+  }
+  
+  .recharts-line-dot {
+    stroke-width: 2px;
+  }
+  
+  /* Add more custom styling as needed */
   

@@ -40,3 +40,17 @@
     background-color: #0056b3;
   }
   
+  /* Add this CSS to your styles.scss or a separate CSS file */
+  .center-text {
+    text-align: center;
+    margin-top: 10px; /* Add some space between the form and the link */
+  }
+
+  .center-text a {
+    color: #007bff; /* Adjust the link color as needed */
+    text-decoration: none;
+  }
+
+  .center-text a:hover {
+    text-decoration: underline;
+  }

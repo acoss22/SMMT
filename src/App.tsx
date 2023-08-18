@@ -7,12 +7,14 @@ import AWS from "aws-sdk"; // Import AWS SDK
 import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
+import SignUpForm from "./components/SignUpForm/SignUpForm";
 
 const Tab = lazy(() => import("./components/Tabs/Tab"));
 
 const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
+  const [showSignUp, setShowSignUp] = useState<boolean>(false);
 
   useEffect(() => {
     // Set AWS credentials
@@ -25,7 +27,7 @@ const App: React.FC = () => {
 
     // Check if a user is already logged in
     const credentials = AWS.config.credentials as AWS.Credentials;
-    credentials.get(err => {
+    credentials.get((err) => {
       if (!err) {
         setIsLoggedIn(true);
         // You might want to update your app state to reflect the user's login status
@@ -47,6 +49,22 @@ const App: React.FC = () => {
     }
   };
 
+  const handleSwitchToSignUp = () => {
+    setShowSignUp(true);
+  };
+
+  const handleSignUp = async (email: string, password: string) => {
+    try {
+      // Sign up the user using Cognito or your authentication method
+      // Update the logic to fit your authentication flow
+      // If successful, set isLoggedIn to true
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Sign Up error:", error);
+      // Handle sign up error (e.g., display error message to the user)
+    }
+  };
+
   if (isLoggedIn === undefined) {
     // Loading state while determining login status
     return <div>Loading...</div>;
@@ -62,7 +80,15 @@ const App: React.FC = () => {
               <Tab tabs={tabs} />
             ) : (
               <div>
-                <LoginForm onLogin={handleLogin} />
+                <div>
+                  {!showSignUp && (
+                    <LoginForm
+                      onLogin={handleLogin}
+                      onSwitchToSignUp={handleSwitchToSignUp}
+                    />
+                  )}
+                  {showSignUp && <SignUpForm onSignUp={handleSignUp} />}
+                </div>
               </div>
             )}
           </Suspense>

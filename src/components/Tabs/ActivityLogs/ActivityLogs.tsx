@@ -3,28 +3,58 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import styles from "./activitylogs.module.scss";
 
+// Define the FollowerHistory interface
+interface FollowerHistory {
+  platform: string;
+  count: number;
+  timestamp: string;
+}
+
 const ActivityLogs: React.FC = () => {
   const followers = useSelector((state: RootState) => state.followers);
   const followerHistory = useSelector(
     (state: RootState) => state.followerHistory
   );
+
   const [previousCounts, setPreviousCounts] = useState<{
-    [platform: string]: number;
+    [platform: string]: {
+      currentCount: number;
+      history: FollowerHistory[];
+    };
   }>({});
 
   useEffect(() => {
-    setPreviousCounts(followers);
-  }, [followers]);
+    const updatedPreviousCounts = {} as {
+      [platform: string]: {
+        currentCount: number;
+        history: FollowerHistory[];
+      };
+    };
+
+    Object.keys(followers).forEach((platform) => {
+      updatedPreviousCounts[platform] = {
+        currentCount: followers[platform],
+        history: [...(previousCounts[platform]?.history || [])],
+      };
+    });
+
+    setPreviousCounts(updatedPreviousCounts);
+  }, [followers, previousCounts]);
 
   const generateLogMessages = () => {
     const logMessages: string[] = [];
 
     followerHistory.forEach(({ platform, count, timestamp }) => {
-      const prevCount = previousCounts[platform] || 0;
-      if (prevCount !== count) {
-        const logMessage = `Platform ${platform} went from ${count} followers to ${
-          count - (count - prevCount)
-        } followers at ${timestamp}`;
+      const { currentCount, history } = previousCounts[platform] || {
+        currentCount: 0,
+        history: [],
+      };
+
+      if (currentCount !== count) {
+        const change = count - currentCount;
+        const logMessage = `Platform ${platform} went from  ${
+          currentCount + change
+        } followers to ${currentCount} followers at ${timestamp}`;
         logMessages.push(logMessage);
       }
     });

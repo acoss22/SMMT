@@ -8,6 +8,7 @@ import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
+import PasswordResetForm from "./components/PasswordResetForm/PasswordResetForm";
 
 const Tab = lazy(() => import("./components/Tabs/Tab"));
 
@@ -15,6 +16,7 @@ const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
+  const [showResetPass, setShowResetPass] = useState<boolean>(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationCodeInputVisible, setVerificationCodeInputVisible] =
     useState(true);
@@ -24,8 +26,22 @@ const App: React.FC = () => {
     setShowSignUp(true);
   };
 
+  const handleSwitchToReset = () => {
+    setShowResetPass(true);
+  }
+
   const handleSwitchToLogin = () => {
     setShowSignUp(false);
+  };
+
+  const handleLogin = async (username: string, password: string) => {
+    try {
+      await Auth.signIn(username, password);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle login error (e.g., display error message to the user)
+    }
   };
 
   const handleResendVerificationCode = async () => {
@@ -69,6 +85,22 @@ const App: React.FC = () => {
     }
   };
 
+  const handleSignUp = async (username: string, password: string, email: string) => {
+    try {
+      await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email, // Provide any additional attributes as needed
+        },
+      });
+      setShowSignUp(false); // Close the sign-up form after successful sign-up
+    } catch (error) {
+      console.error("Sign-up error:", error);
+      // Handle sign-up error (e.g., display error message to the user)
+    }
+  };
+
   return (
     <div className={styles.main}>
       <Header
@@ -86,14 +118,15 @@ const App: React.FC = () => {
                 <div>
                   {!showSignUp && (
                     <LoginForm
-                      onLogin={() => {}}
+                      onLogin={handleLogin}
                       onSwitchToSignUp={handleSwitchToSignUp}
+                      onSwitchToReset={handleSwitchToReset}
                     />
                   )}
                   {showSignUp && (
                     <SignUpForm
                       onSwitchToLogin={handleSwitchToLogin}
-                      onSignUp={() => {}}
+                      onSignUp={handleSignUp}
                     />
                   )}
                   {verificationCodeInputVisible && (
@@ -141,6 +174,7 @@ const App: React.FC = () => {
                       </div>
                     </div>
                   )}
+                  {(showResetPass && <PasswordResetForm />)}
                 </div>
               </div>
             )}

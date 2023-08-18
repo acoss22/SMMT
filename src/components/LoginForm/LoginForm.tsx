@@ -4,9 +4,10 @@ import styles from "./loginform.module.scss";
 interface LoginFormProps {
   onLogin: (username: string, password: string) => void;
   onSwitchToSignUp: () => void; // Add this prop for switching to the sign-up form
+  onSwitchToReset: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp, onSwitchToReset }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,6 +44,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp }) => {
         Don't have an account?{" "}
         <a href="#" onClick={onSwitchToSignUp}>
           Sign Up
+        </a>
+      </p><p className={styles["center-text"]}>
+        Forgot Password?{" "}
+        <a href="#" onClick={onSwitchToReset}>
+          Recover
         </a>
       </p>
     </div>

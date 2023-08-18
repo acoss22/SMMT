@@ -60,6 +60,12 @@ const initialState: TabState = {
       timestamp: "7/5/2023, 11:52:55 AM",
     },
     {
+      platform: "Facebook",
+      prevCount: 47,
+      count: 37,
+      timestamp: "7/5/2023, 12:52:55 AM",
+    },
+    {
       platform: "Instagram",
       prevCount: 0,
       count: 0,

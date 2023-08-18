@@ -10,7 +10,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(username, password);
   };
@@ -18,7 +18,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp }) => {
   return (
     <div className={styles["center-text"]}>
       <h2>Login</h2>
-      <form className={styles["login-form"]} onSubmit={handleSubmit}>
+      <form className={styles["login-form"]} onSubmit={handleLogin}>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -38,13 +38,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToSignUp }) => {
           />
         </div>
         <button type="submit">Log In</button>
-        <p className={styles["center-text"]}>
-          Don't have an account?{" "}
-          <a href="#" onClick={onSwitchToSignUp}>
-            Sign Up
-          </a>
-        </p>
       </form>
+      <p className={styles["center-text"]}>
+        Don't have an account?{" "}
+        <a href="#" onClick={onSwitchToSignUp}>
+          Sign Up
+        </a>
+      </p>
     </div>
   );
 };

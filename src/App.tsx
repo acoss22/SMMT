@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { Provider } from "react-redux";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import store from "./store/store";
 import AWS from "aws-sdk"; // Import AWS SDK
+import { Auth } from 'aws-amplify';
 import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -13,35 +14,21 @@ const Tab = lazy(() => import("./components/Tabs/Tab"));
 
 const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Start with not logged in
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Set AWS credentials
-    AWS.config.update({
-      region: "us-east-1", // Replace with your AWS region
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: "us-east-1_JDRkJzrpM", // Set your Cognito Identity Pool ID
-      }),
-    });
-
-    // Check if a user is already logged in
-    const credentials = AWS.config.credentials as AWS.Credentials;
-    credentials.get((err) => {
-      if (!err) {
-        setIsLoggedIn(true);
-        // You might want to update your app state to reflect the user's login status
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
 
   const handleLogin = async (username: string, password: string) => {
     try {
       // Sign in the user using Cognito or your authentication method
       // Update the logic to fit your authentication flow
       // If successful, set isLoggedIn to true
+      // Now update the AWS credentials with the Identity Pool ID
+      AWS.config.update({
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: "us-east-1_JDRkJzrpM", // Set your Cognito Identity Pool ID
+        }),
+      });
+  
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Login error:", error);
@@ -57,23 +44,19 @@ const App: React.FC = () => {
     setShowSignUp(false);
   };
 
-
   const handleSignUp = async (email: string, password: string) => {
     try {
-      // Sign up the user using Cognito or your authentication method
-      // Update the logic to fit your authentication flow
-      // If successful, set isLoggedIn to true
+      await Auth.signUp({
+        username: email,
+        password: password,
+        // You can provide additional attributes here if needed
+      });
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Sign Up error:", error);
       // Handle sign up error (e.g., display error message to the user)
     }
   };
-
-  if (isLoggedIn === undefined) {
-    // Loading state while determining login status
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className={styles.main}>
@@ -92,7 +75,12 @@ const App: React.FC = () => {
                       onSwitchToSignUp={handleSwitchToSignUp}
                     />
                   )}
-                  {showSignUp && <SignUpForm onSwitchToLogin={handleSwitchToLogin} onSignUp={handleSignUp} />}
+                  {showSignUp && (
+                    <SignUpForm
+                      onSwitchToLogin={handleSwitchToLogin}
+                      onSignUp={handleSignUp}
+                    />
+                  )}
                 </div>
               </div>
             )}

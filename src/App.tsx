@@ -3,8 +3,7 @@ import { Provider } from "react-redux";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import store from "./store/store";
-import AWS from "aws-sdk"; // Import AWS SDK
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -14,27 +13,12 @@ const Tab = lazy(() => import("./components/Tabs/Tab"));
 
 const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Start with not logged in
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
-
-  const handleLogin = async (username: string, password: string) => {
-    try {
-      // Sign in the user using Cognito or your authentication method
-      // Update the logic to fit your authentication flow
-      // If successful, set isLoggedIn to true
-      // Now update the AWS credentials with the Identity Pool ID
-      AWS.config.update({
-        credentials: new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: "us-east-1_JDRkJzrpM", // Set your Cognito Identity Pool ID
-        }),
-      });
-  
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error("Login error:", error);
-      // Handle login error (e.g., display error message to the user)
-    }
-  };
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCodeInputVisible, setVerificationCodeInputVisible] =
+    useState(true);
+  const [verificationEmail, setVerificationEmail] = useState("");
 
   const handleSwitchToSignUp = () => {
     setShowSignUp(true);
@@ -44,20 +28,34 @@ const App: React.FC = () => {
     setShowSignUp(false);
   };
 
-  const handleSignUp = async (email: string, password: string, preferredUsername: string) => {
+  const handleResendVerificationCode = async () => {
     try {
-      await Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-          preferred_username: preferredUsername,
-          // You can add other attributes here if needed
-        }
-      });
+      const email = verificationEmail;
+
+      // Construct the username based on email and timestamp
+      const reconstructedUsername = `${email}#${Math.floor(Date.now() / 1000)}`;
+
+      console.log(
+        "Resending verification code for username:",
+        reconstructedUsername
+      );
+
+      await Auth.resendSignUp(reconstructedUsername);
+      // Optionally display a message to the user indicating the code has been resent
+    } catch (error) {
+      console.error("Resend verification code error:", error);
+      // Handle resend verification code error (e.g., display error message to the user)
+    }
+  };
+
+  const handleVerification = async () => {
+    try {
+      // Use the inputs for verificationEmail and verificationCode
+      await Auth.confirmSignUp(verificationEmail, verificationCode);
       setIsLoggedIn(true);
     } catch (error) {
-      console.error("Sign Up error:", error);
-      // Handle sign up error (e.g., display error message to the user)
+      console.error("Verification error:", error);
+      // Handle verification error (e.g., display error message to the user)
     }
   };
 
@@ -73,29 +71,75 @@ const App: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <Header title="Social Media Management Tool" onLogout={handleLogout} isLoggedIn={isLoggedIn}/>
+      <Header
+        title="Social Media Management Tool"
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
+      />
       <Provider store={store}>
         <div>
-        <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>Loading...</div>}>
             {isLoggedIn ? (
-              <>
-                <Tab tabs={tabs} />
-              </>
+              <Tab tabs={tabs} />
             ) : (
-
               <div>
                 <div>
                   {!showSignUp && (
                     <LoginForm
-                      onLogin={handleLogin}
+                      onLogin={() => {}}
                       onSwitchToSignUp={handleSwitchToSignUp}
                     />
                   )}
                   {showSignUp && (
                     <SignUpForm
                       onSwitchToLogin={handleSwitchToLogin}
-                      onSignUp={handleSignUp}
+                      onSignUp={() => {}}
                     />
+                  )}
+                  {verificationCodeInputVisible && (
+                    <div className={styles.verificationBlock}>
+                      <div className={styles.resendBlock}>
+                        <label
+                          className={styles.resendLabel}
+                          htmlFor="verificationEmailToResend"
+                        >
+                          Email to Verify:
+                        </label>
+                        <input
+                          type="email"
+                          id="verificationEmailToResend"
+                          value={verificationEmail}
+                          onChange={(e) => setVerificationEmail(e.target.value)}
+                          className={styles.resendEmailInput}
+                        />
+                        <button
+                          className={styles.verifyButton}
+                          onClick={handleResendVerificationCode}
+                        >
+                          Resend Code
+                        </button>
+                        <label
+                          className={styles.verificationLabel}
+                          htmlFor="verificationCode"
+                        >
+                          Verification Code:
+                        </label>
+                        <input
+                          type="text"
+                          id="verificationCode"
+                          value={verificationCode}
+                          onChange={(e) => setVerificationCode(e.target.value)}
+                          className={styles.verificationCode}
+                        />
+                        <button
+                          id="verifyButton"
+                          className={styles.verifyButton}
+                          onClick={handleVerification}
+                        >
+                          Verify
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>

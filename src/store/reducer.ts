@@ -60,12 +60,15 @@ const tabSlice = createSlice({
     updateFollowerCount: (state, action: PayloadAction<UpdateFollowerActionPayload>) => {
       const { platform, count } = action.payload;
       const prevCount = state.followers[platform];
-      state.followers[platform] = count;
-      state.lastUpdated = new Date().toLocaleString();
-    
-      // Add the follower count change to history
-      state.followerHistory.push({ platform, count, timestamp: state.lastUpdated });
+      
+      if (prevCount !== count) {
+        state.followers[platform] = count;
+        state.lastUpdated = new Date().toLocaleString();        
+        // Add the follower count change to history
+        state.followerHistory.push({ platform, count, timestamp: state.lastUpdated });
+      }
     },
+    
     toggleTaskChecked: (state, action: PayloadAction<string>) => {
       const taskId = action.payload;
       const task = state.tasks.find(task => task.id === taskId);

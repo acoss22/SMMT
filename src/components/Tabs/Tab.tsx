@@ -7,6 +7,7 @@ import FollowerCount from './FollowerCount/FollowerCount';
 import DailyTasks from './DailyTasks/DailyTasks';
 import { RootState } from 'store/store';
 import ActivityLogs from './ActivityLogs/ActivityLogs';
+import Analytics from './Analytics/Analytics';
 
 interface TabProps {
   tabs: string[];
@@ -40,6 +41,7 @@ const Tab: React.FC<TabProps> = ({ tabs }) => {
         {activeTab === 0 && <FollowerCount />} 
         {activeTab === 1 && <DailyTasks />}
         {activeTab === 2 && <ActivityLogs />}
+        {activeTab === 3 && <Analytics />}
       </div>
     </div>
   );

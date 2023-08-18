@@ -9,7 +9,7 @@ import './styles.scss';
 const Tab = lazy(() => import("./components/Tabs/Tab")); // Lazy load Tab component
 
 const App: React.FC = () => {
-  const tabs: string[] = ["Followers", "Tasks", "Activity"];
+  const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
 
   return (
     <div className={styles.main}>

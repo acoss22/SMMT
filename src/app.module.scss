@@ -1,3 +1,4 @@
+/* Add this CSS to your styles.scss or a separate CSS file */
 .main {
   width: 100%;
   margin: 0;
@@ -5,77 +6,78 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
   height: 100%;
+}
 
-  /* Add this CSS to your styles.scss or a separate CSS file */
-  .center-text {
-    text-align: center;
-    margin-top: 10px; /* Add some space between the form and the link */
-  }
+.center-text {
+  text-align: center;
+  margin-top: 10px;
+}
 
-  .center-text a {
-    color: #007bff; /* Adjust the link color as needed */
-    text-decoration: none;
-  }
+.center-text a {
+  color: #007bff;
+  text-decoration: none;
+}
 
-  .center-text a:hover {
-    text-decoration: underline;
-  }
-  /* Add these styles to your existing stylesheet */
+.center-text a:hover {
+  text-decoration: underline;
+}
 
-  /* Center the verification code input and button block */
-  .verificationBlock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px; /* Add margin to adjust spacing */
-  }
+.passwordResetForm{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Center the verification code input and button block */
+.verificationBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  margin-top: 20px;
+}
 
-  .verificationBlock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-  }
 
-  /* Styling for the verification code input */
-  .verificationCode {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
+/* Styling for the verification code input and button */
+.verificationCode,
+.resendEmailInput,
+.verifyButton {
+  margin: 10px; /* Add consistent margin around all elements */
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: auto;
+}
 
-  /* Styling for the verification code input button */
-  .verifyButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
+.verifyButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
 
-  }
+.verificationEmailBlock{
+  width: auto;
+}
 
-  .verificationLabel{
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+.verifyButton:hover {
+  background-color: #0056b3;
+}
 
-  .verifyButton:hover {
-    background-color: #0056b3;
-  }
+/* Add vertical spacing between elements */
+.verificationLabel {
+  margin-bottom: 5px; /* Adjust margin for label */
+}
 
-  /* Add vertical spacing between elements */
-  .verificationCode {
-    margin-bottom: 10px; /* Add margin between input and button */
-  }
+/* Additional styling for input and button inside verificationBlock */
+.verificationBlock input,
+.verificationBlock button {
+  width: 100%; /* Make inputs and buttons full width within the block */
+}
 
-  .resendEmailInput{
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+.resendEmailInput,
+.verificationCode {
+  margin-bottom: 10px; /* Add margin between input and button */
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-
+import styles from './passwordreset.module.scss';
 interface PasswordResetFormProps {
   // Add any props you might need here
 }
@@ -44,13 +44,14 @@ function PasswordResetForm(props: PasswordResetFormProps) {
     console.log(error);
   };
 
+  
   return (
-    <div>
+    <div className={styles['form-container']}>
       {resetSuccessful ? (
         <p>Password reset successful! You can now log in with your new password.</p>
       ) : (
         <form>
-          <div>
+          <div className={styles['form-element']}>
             <label>Email:</label>
             <input
               type="email"
@@ -59,27 +60,27 @@ function PasswordResetForm(props: PasswordResetFormProps) {
             />
           </div>
         
-            <div>
-              <button type="button" onClick={handlePasswordReset}>Request Password Reset</button>
-            </div>
+          <div className={styles['button-container']}>
+            <button type="button" onClick={handlePasswordReset}>Request Password Reset</button>
+          </div>
          
-            <div>
-              <label>Verification Code:</label>
-              <input
-                type="text"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-              />
-              <label>New Password:</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <button type="button" onClick={handlePasswordSubmit}>Submit New Password</button>
-            </div>
+          <div className={styles['form-element']}>
+            <label className={styles['verfication-code']}>Verification Code:</label>
+            <input
+              type="text"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+            />
+            <label>New Password:</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button  className={styles['button-newpass']} type="button" onClick={handlePasswordSubmit}>Submit New Password</button>
+          </div>
          
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
         </form>
       )}
     </div>

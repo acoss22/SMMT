@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
   const handleSwitchToReset = () => {
     setShowResetPass(true);
-  }
+  };
 
   const handleSwitchToLogin = () => {
     setShowSignUp(false);
@@ -85,7 +85,11 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSignUp = async (username: string, password: string, email: string) => {
+  const handleSignUp = async (
+    username: string,
+    password: string,
+    email: string
+  ) => {
     try {
       await Auth.signUp({
         username,
@@ -132,49 +136,59 @@ const App: React.FC = () => {
                   {verificationCodeInputVisible && (
                     <div className={styles.verificationBlock}>
                       <div className={styles.resendBlock}>
-                        <label
-                          className={styles.resendLabel}
-                          htmlFor="verificationEmailToResend"
-                        >
-                          Email to Verify:
-                        </label>
-                        <input
-                          type="email"
-                          id="verificationEmailToResend"
-                          value={verificationEmail}
-                          onChange={(e) => setVerificationEmail(e.target.value)}
-                          className={styles.resendEmailInput}
-                        />
-                        <button
-                          className={styles.verifyButton}
-                          onClick={handleResendVerificationCode}
-                        >
-                          Resend Code
-                        </button>
-                        <label
-                          className={styles.verificationLabel}
-                          htmlFor="verificationCode"
-                        >
-                          Verification Code:
-                        </label>
-                        <input
-                          type="text"
-                          id="verificationCode"
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
-                          className={styles.verificationCode}
-                        />
-                        <button
-                          id="verifyButton"
-                          className={styles.verifyButton}
-                          onClick={handleVerification}
-                        >
-                          Verify
-                        </button>
+                        <div className={styles.verificationEmailBlock}>
+                          <label
+                            className={styles.resendLabel}
+                            htmlFor="verificationEmailToResend"
+                          >
+                            Email to Verify:
+                          </label>
+                          <input
+                            type="email"
+                            id="verificationEmailToResend"
+                            value={verificationEmail}
+                            onChange={(e) =>
+                              setVerificationEmail(e.target.value)
+                            }
+                            className={styles.resendEmailInput}
+                          />
+                          <button
+                            className={styles.verifyButton}
+                            onClick={handleResendVerificationCode}
+                          >
+                            Resend Code
+                          </button>{" "}
+                        </div>
+                        <div>
+                          <label
+                            className={styles.verificationLabel}
+                            htmlFor="verificationCode"
+                          >
+                            Verification Code:
+                          </label>
+                          <input
+                            type="text"
+                            id="verificationCode"
+                            value={verificationCode}
+                            onChange={(e) =>
+                              setVerificationCode(e.target.value)
+                            }
+                            className={styles.verificationCode}
+                          />
+                          <button
+                            id="verifyButton"
+                            className={styles.verifyButton}
+                            onClick={handleVerification}
+                          >
+                            Verify
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
-                  {(showResetPass && <PasswordResetForm />)}
+                  <div className={styles.passwordResetForm}>
+                  {showResetPass && <PasswordResetForm />}
+                  </div>
                 </div>
               </div>
             )}

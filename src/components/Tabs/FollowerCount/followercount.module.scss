@@ -20,7 +20,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
+      justify-content: center;
+   
       min-height: 170px;
       min-width: 220px;
 
@@ -62,11 +63,14 @@
       }
 
       .bottom-right-icon {
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        transform: translate(50%, 50%);
+       
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+        font-size: 14px;
+        /* Other styling properties as needed */
       }
+      
     }
   }
   .add-social-media {
@@ -75,6 +79,7 @@
     font-size: 20px; /* Add font-size to match */
     align-items: center;
     justify-content: center;
+    height: auto;
 
     .add-social-media-input {
       width: 250px;
@@ -99,12 +104,13 @@
       margin-left: 10px;
       padding: 0;
       font-size: inherit; /* Inherit font-size */
+  
     }
 
     .add-social-media-button {
-      height: 32.5px;
       margin-left: 10px;
       font-size: inherit; /* Inherit font-size */
+      width: auto;
     }
     .add-social-media-input {
       width: 250px;
@@ -112,6 +118,8 @@
       margin: 0;
       padding: 0;
       font-size: 20px;
+      display: flex;
+      flex-direction: row;
     }
 
     .add-social-media-input:hover {
@@ -153,15 +161,26 @@
 
   .add-social-media-button {
     margin-bottom: 30px;
+    display: flex; /* Add this */
+    justify-content: center; /* Add this */
   }
 
   .checkbox-line {
     margin-bottom: 10px;
     margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    width: auto;
   }
 
   .social-list {
     justify-content: center;
     margin-top: 1rem;
+  }
+
+  .line{
+    display: flex;
+    flex-direction: row;
+    width: auto;
   }
 }

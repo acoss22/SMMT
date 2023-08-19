@@ -119,7 +119,7 @@ const App: React.FC = () => {
               <Tab tabs={tabs} />
             ) : (
               <div>
-                <div>
+                <div className={styles.emailForm}>
                   {!showSignUp && (
                     <LoginForm
                       onLogin={handleLogin}
@@ -156,7 +156,7 @@ const App: React.FC = () => {
                             className={styles.verifyButton}
                             onClick={handleResendVerificationCode}
                           >
-                            Resend Code
+                            Resend
                           </button>{" "}
                         </div>
                         <div>

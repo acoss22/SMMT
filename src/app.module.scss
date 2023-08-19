@@ -30,7 +30,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column-rule;
 }
+
 /* Center the verification code input and button block */
 .verificationBlock {
   display: flex;
@@ -95,4 +97,11 @@
   width: 600px;
   text-align: center;
   justify-content: center;
+}
+
+/* Add this CSS to your styles.scss or a separate CSS file */
+.cancel {
+  margin-top: 300px; /* Add margin between the form and the button */
+  text-align: center;
+  position: fixed;
 }

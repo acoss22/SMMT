@@ -21,6 +21,9 @@ const App: React.FC = () => {
   const [verificationCodeInputVisible, setVerificationCodeInputVisible] =
     useState(true);
   const [verificationEmail, setVerificationEmail] = useState("");
+  // Inside the App component
+  const [recoverPasswordMode, setRecoverPasswordMode] =
+    useState<boolean>(false);
 
   const handleSwitchToSignUp = () => {
     setShowSignUp(true);
@@ -28,6 +31,7 @@ const App: React.FC = () => {
 
   const handleSwitchToReset = () => {
     setShowResetPass(true);
+    setRecoverPasswordMode(true);
   };
 
   const handleSwitchToLogin = () => {
@@ -105,6 +109,10 @@ const App: React.FC = () => {
     }
   };
 
+  const handleExitRecoverMode = () => {
+    setRecoverPasswordMode(false); // Deactivate password recovery mode
+  };
+
   return (
     <div className={styles.main}>
       <Header
@@ -120,7 +128,7 @@ const App: React.FC = () => {
             ) : (
               <div>
                 <div className={styles.emailForm}>
-                  {!showSignUp && (
+                  {!showSignUp && !recoverPasswordMode && (
                     <LoginForm
                       onLogin={handleLogin}
                       onSwitchToSignUp={handleSwitchToSignUp}
@@ -133,7 +141,7 @@ const App: React.FC = () => {
                       onSignUp={handleSignUp}
                     />
                   )}
-                  {verificationCodeInputVisible && (
+                  {verificationCodeInputVisible && !recoverPasswordMode && (
                     <div className={styles.verificationBlock}>
                       <div className={styles.resendBlock}>
                         <div className={styles.verificationEmailBlock}>
@@ -186,9 +194,17 @@ const App: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  <div className={styles.passwordResetForm}>
-                  {showResetPass && <PasswordResetForm />}
-                  </div>
+                  {recoverPasswordMode && (
+                    <div className={styles.passwordResetForm}>
+                      {showResetPass && <PasswordResetForm />}
+                      <button
+                        className={`${styles.verifyButton} ${styles.cancel}`}
+                        onClick={handleExitRecoverMode}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

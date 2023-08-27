@@ -3,7 +3,8 @@ import { Provider } from "react-redux";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import store from "./store/store";
-import { Auth } from "aws-amplify";
+import { Auth, Amplify } from "aws-amplify"; // Import Amplify here
+import awsconfig from "./aws-exports"; // Update the path if needed
 import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -11,6 +12,8 @@ import SignUpForm from "./components/SignUpForm/SignUpForm";
 import PasswordResetForm from "./components/PasswordResetForm/PasswordResetForm";
 
 const Tab = lazy(() => import("./components/Tabs/Tab"));
+
+Amplify.configure(awsconfig);
 
 const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
@@ -21,9 +24,9 @@ const App: React.FC = () => {
   const [verificationCodeInputVisible, setVerificationCodeInputVisible] =
     useState(true);
   const [verificationEmail, setVerificationEmail] = useState("");
-  // Inside the App component
   const [recoverPasswordMode, setRecoverPasswordMode] =
     useState<boolean>(false);
+
 
   const handleSwitchToSignUp = () => {
     setShowSignUp(true);
@@ -88,7 +91,7 @@ const App: React.FC = () => {
       // Handle logout error (e.g., display error message to the user)
     }
   };
-
+  
   const handleSignUp = async (
     username: string,
     password: string,
@@ -99,16 +102,20 @@ const App: React.FC = () => {
         username,
         password,
         attributes: {
-          email, // Provide any additional attributes as needed
+          email,
+          name: username // Provide any additional attributes as needed
         },
+        validationData: [], // Empty array for validation data
       });
+  
       setShowSignUp(false); // Close the sign-up form after successful sign-up
     } catch (error) {
       console.error("Sign-up error:", error);
       // Handle sign-up error (e.g., display error message to the user)
     }
   };
-
+  
+  
   const handleExitRecoverMode = () => {
     setRecoverPasswordMode(false); // Deactivate password recovery mode
   };

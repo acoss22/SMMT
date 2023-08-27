@@ -49,6 +49,5 @@ yarn-error.log*
 
 src/aws-exports.js
 src/aws-exports.d.ts
-src/aws-exports.js
-src/aws-exports.js
-src/aws-exports.js
+
+

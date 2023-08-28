@@ -21,7 +21,7 @@
     "@types/react": "^18.2.20",
     "aws-amplify": "^5.3.8",
     "aws-amplify-react": "^5.1.43",
-    "aws-sdk": "^2.1439.0",
+    "aws-sdk": "^2.1445.0",
     "chart.js": "^4.3.3",
     "chartjs-adapter-moment": "^1.0.1",
     "d3": "^7.8.5",

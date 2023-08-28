@@ -108,12 +108,14 @@ const FollowerCount: React.FC = () => {
                 )}
                 Followers
               </div>
-              <button
-                className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
-                onClick={() => handleDeleteSocialMedia(platform)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+              <div>
+                <button
+                  className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
+                  onClick={() => handleDeleteSocialMedia(platform)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -121,7 +123,7 @@ const FollowerCount: React.FC = () => {
       <div className={styles["add-social-media"]}>
         <input
           className={`${styles["add-social-media-input"]} ${
-            (isPlatformEmpty || isDuplicatePlatform) ? styles["red-border"] : ""
+            isPlatformEmpty || isDuplicatePlatform ? styles["red-border"] : ""
           }`}
           placeholder="New Platform"
           value={newPlatform}
@@ -141,15 +143,17 @@ const FollowerCount: React.FC = () => {
             {`${newPlatform} platform is already in the list.`}
           </div>
         )}
-        <div className={styles["checkbox-line"]}>
-          <input
-            className={styles["add-social-media-count"]}
-            placeholder="Follower Count"
-            type="number"
-            value={newCount}
-            onChange={(e) => setNewCount(parseInt(e.target.value))}
-          />{" "}
-          Followers
+        <div className={styles.line}>
+          <div className={styles["checkbox-line"]}>
+            <input
+              className={styles["add-social-media-count"]}
+              placeholder="Follower Count"
+              type="number"
+              value={newCount}
+              onChange={(e) => setNewCount(parseInt(e.target.value))}
+            />{" "}
+            Followers
+          </div>
         </div>
         <button
           className={styles["add-social-media-button"]}

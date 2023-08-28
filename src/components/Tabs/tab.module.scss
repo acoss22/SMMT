@@ -2,19 +2,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #000;
 
   .tab-buttons {
     display: flex;
     justify-content: left;
-    margin-bottom: 16px;
+    color: #000;
     background-color: #A9A9A9;
     width: 100%;
 
     .tab-button{
       border:none;
+      color: #000;
       background-color: #A9A9A9;
-      padding: 0.2rem 1rem 0.2rem 1rem;
- 
+      padding: 0;
+      margin: 0;
     }
 
     .active {

@@ -136,6 +136,12 @@ const tabSlice = createSlice({
       delete state.followers[platformToDelete];
       state.lastUpdated = new Date().toLocaleString();
     },
+    updateTasks: (state, action: PayloadAction<Task[]>) => {
+      console.log("tasks:", state.tasks); // Add this line before the mapping operation
+
+      state.tasks = action.payload;
+    },
+
     
   },
 });
@@ -145,6 +151,6 @@ export interface UpdateFollowerActionPayload {
   count: number;
 }
 
-export const { setActiveTab, updateFollowerCount, toggleTaskChecked, addSocialMedia, deleteSocialMedia } = tabSlice.actions;
+export const { setActiveTab, updateFollowerCount, toggleTaskChecked, addSocialMedia, deleteSocialMedia, updateTasks } = tabSlice.actions;
 
 export default tabSlice.reducer;

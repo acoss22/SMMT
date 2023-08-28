@@ -1,23 +1,220 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { Provider } from "react-redux";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import store from "./store/store"; // Import the store
-import styles from './app.module.scss';
-import './styles.scss';
+import store from "./store/store";
+import { Auth, Amplify } from "aws-amplify"; // Import Amplify here
+import awsconfig from "./aws-exports"; // Update the path if needed
+import styles from "./app.module.scss";
+import "./styles.scss";
+import LoginForm from "./components/LoginForm/LoginForm";
+import SignUpForm from "./components/SignUpForm/SignUpForm";
+import PasswordResetForm from "./components/PasswordResetForm/PasswordResetForm";
 
-const Tab = lazy(() => import("./components/Tabs/Tab")); // Lazy load Tab component
+const Tab = lazy(() => import("./components/Tabs/Tab"));
+
+Amplify.configure(awsconfig);
 
 const App: React.FC = () => {
   const tabs: string[] = ["Followers", "Tasks", "Activity", "Analytics"];
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [showSignUp, setShowSignUp] = useState<boolean>(false);
+  const [showResetPass, setShowResetPass] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCodeInputVisible, setVerificationCodeInputVisible] =
+    useState(true);
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const [recoverPasswordMode, setRecoverPasswordMode] =
+    useState<boolean>(false);
+
+
+  const handleSwitchToSignUp = () => {
+    setShowSignUp(true);
+  };
+
+  const handleSwitchToReset = () => {
+    setShowResetPass(true);
+    setRecoverPasswordMode(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowSignUp(false);
+  };
+
+  const handleLogin = async (username: string, password: string) => {
+    try {
+      await Auth.signIn(username, password);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle login error (e.g., display error message to the user)
+    }
+  };
+
+  const handleResendVerificationCode = async () => {
+    try {
+      const email = verificationEmail;
+
+      // Construct the username based on email and timestamp
+      const reconstructedUsername = `${email}#${Math.floor(Date.now() / 1000)}`;
+
+      console.log(
+        "Resending verification code for username:",
+        reconstructedUsername
+      );
+
+      await Auth.resendSignUp(reconstructedUsername);
+      // Optionally display a message to the user indicating the code has been resent
+    } catch (error) {
+      console.error("Resend verification code error:", error);
+      // Handle resend verification code error (e.g., display error message to the user)
+    }
+  };
+
+  const handleVerification = async () => {
+    try {
+      // Use the inputs for verificationEmail and verificationCode
+      await Auth.confirmSignUp(verificationEmail, verificationCode);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Verification error:", error);
+      // Handle verification error (e.g., display error message to the user)
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Handle logout error (e.g., display error message to the user)
+    }
+  };
+  
+  const handleSignUp = async (
+    username: string,
+    password: string,
+    email: string
+  ) => {
+    try {
+      await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+          name: username // Provide any additional attributes as needed
+        },
+        validationData: [], // Empty array for validation data
+      });
+  
+      setShowSignUp(false); // Close the sign-up form after successful sign-up
+    } catch (error) {
+      console.error("Sign-up error:", error);
+      // Handle sign-up error (e.g., display error message to the user)
+    }
+  };
+  
+  
+  const handleExitRecoverMode = () => {
+    setRecoverPasswordMode(false); // Deactivate password recovery mode
+  };
 
   return (
     <div className={styles.main}>
-      <Header title="Social Media Management Tool" />
+      <Header
+        title="Social Media Management Tool"
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
+      />
       <Provider store={store}>
         <div>
           <Suspense fallback={<div>Loading...</div>}>
-            <Tab tabs={tabs} />
+            {isLoggedIn ? (
+              <Tab tabs={tabs} />
+            ) : (
+              <div>
+                <div className={styles.emailForm}>
+                  {!showSignUp && !recoverPasswordMode && (
+                    <LoginForm
+                      onLogin={handleLogin}
+                      onSwitchToSignUp={handleSwitchToSignUp}
+                      onSwitchToReset={handleSwitchToReset}
+                    />
+                  )}
+                  {showSignUp && (
+                    <SignUpForm
+                      onSwitchToLogin={handleSwitchToLogin}
+                      onSignUp={handleSignUp}
+                    />
+                  )}
+                  {verificationCodeInputVisible && !recoverPasswordMode && (
+                    <div className={styles.verificationBlock}>
+                      <div className={styles.resendBlock}>
+                        <div className={styles.verificationEmailBlock}>
+                          <label
+                            className={styles.resendLabel}
+                            htmlFor="verificationEmailToResend"
+                          >
+                            Email to Verify:
+                          </label>
+                          <input
+                            type="email"
+                            id="verificationEmailToResend"
+                            value={verificationEmail}
+                            onChange={(e) =>
+                              setVerificationEmail(e.target.value)
+                            }
+                            className={styles.resendEmailInput}
+                          />
+                          <button
+                            className={styles.verifyButton}
+                            onClick={handleResendVerificationCode}
+                          >
+                            Resend
+                          </button>{" "}
+                        </div>
+                        <div>
+                          <label
+                            className={styles.verificationLabel}
+                            htmlFor="verificationCode"
+                          >
+                            Verification Code:
+                          </label>
+                          <input
+                            type="text"
+                            id="verificationCode"
+                            value={verificationCode}
+                            onChange={(e) =>
+                              setVerificationCode(e.target.value)
+                            }
+                            className={styles.verificationCode}
+                          />
+                          <button
+                            id="verifyButton"
+                            className={styles.verifyButton}
+                            onClick={handleVerification}
+                          >
+                            Verify
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {recoverPasswordMode && (
+                    <div className={styles.passwordResetForm}>
+                      {showResetPass && <PasswordResetForm />}
+                      <button
+                        className={`${styles.verifyButton} ${styles.cancel}`}
+                        onClick={handleExitRecoverMode}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </Suspense>
         </div>
       </Provider>

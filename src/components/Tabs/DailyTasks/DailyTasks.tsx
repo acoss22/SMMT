@@ -7,7 +7,7 @@ import { Auth, Logger } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 import AWS from "aws-sdk";
 
-Auth.configure(awsconfig); // Configure Amplify
+Auth.configure(awsconfig); 
 
 const logger = new Logger("DailyTasks");
 
@@ -18,7 +18,7 @@ interface Task {
 }
 
 const DailyTasks: React.FC = () => {
-  const tasks = useSelector((state: RootState) => state.tasks); // Access tasks directly
+  const tasks = useSelector((state: RootState) => state.tasks); 
   const dispatch = useDispatch();
   const [fetchError, setFetchError] = useState<string | null>(null);
 

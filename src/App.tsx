@@ -27,7 +27,6 @@ const App: React.FC = () => {
   const [recoverPasswordMode, setRecoverPasswordMode] =
     useState<boolean>(false);
 
-
   const handleSwitchToSignUp = () => {
     setShowSignUp(true);
   };
@@ -48,6 +47,20 @@ const App: React.FC = () => {
     } catch (error) {
       console.error("Login error:", error);
       // Handle login error (e.g., display error message to the user)
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      // Hardcoded guest email for login
+      const guestEmail = "guestsmmt@gmail.com";
+      const guestPassword = "Iamguest1!"; // Provide a guest password here
+
+      await Auth.signIn(guestEmail, guestPassword);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Guest login error:", error);
+      // Handle guest login error (e.g., display error message to the user)
     }
   };
 
@@ -91,7 +104,7 @@ const App: React.FC = () => {
       // Handle logout error (e.g., display error message to the user)
     }
   };
-  
+
   const handleSignUp = async (
     username: string,
     password: string,
@@ -103,19 +116,19 @@ const App: React.FC = () => {
         password,
         attributes: {
           email,
-          name: username // Provide any additional attributes as needed
+          name: username, // Provide any additional attributes as needed
+          preferred_username: username,
         },
         validationData: [], // Empty array for validation data
       });
-  
+
       setShowSignUp(false); // Close the sign-up form after successful sign-up
     } catch (error) {
       console.error("Sign-up error:", error);
       // Handle sign-up error (e.g., display error message to the user)
     }
   };
-  
-  
+
   const handleExitRecoverMode = () => {
     setRecoverPasswordMode(false); // Deactivate password recovery mode
   };
@@ -212,11 +225,20 @@ const App: React.FC = () => {
                       </button>
                     </div>
                   )}
+              
                 </div>
+                
               </div>
+              
             )}
           </Suspense>
         </div>
+        <button
+                    className={styles.verifyButton}
+                    onClick={handleGuestLogin}
+                  >
+                    Enter as a guest
+                  </button>
       </Provider>
       <Footer copyright="2023 Ana Sequeira" />
     </div>

@@ -162,7 +162,7 @@ const App: React.FC = () => {
                     />
                   )}
                   {verificationCodeInputVisible && !recoverPasswordMode && (
-                    <div className={styles.verificationBlock}>
+                    <div className={styles.buttonContainer}>
                       <div className={styles.resendBlock}>
                         <div className={styles.verificationEmailBlock}>
                           <label
@@ -225,20 +225,16 @@ const App: React.FC = () => {
                       </button>
                     </div>
                   )}
-              
                 </div>
-                
               </div>
-              
             )}
           </Suspense>
         </div>
-        <button
-                    className={styles.verifyButton}
-                    onClick={handleGuestLogin}
-                  >
-                    Enter as a guest
-                  </button>
+        <div className={styles.buttonContainer}>
+          <button className={styles.verifyButton} onClick={handleGuestLogin}>
+            Enter as a guest
+          </button>
+        </div>
       </Provider>
       <Footer copyright="2023 Ana Sequeira" />
     </div>

@@ -30,7 +30,7 @@ const DailyTasks: React.FC = () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
 
-      const userID = user.attributes.email; // Use Cognito username as the userID
+      const userEmail = user.attributes.email; 
 
       // Use Amplify's Auth to get user credentials
       const credentials = await Auth.currentCredentials();
@@ -44,7 +44,7 @@ const DailyTasks: React.FC = () => {
       const params = {
         FunctionName: "getTasksFromUsername",
         InvocationType: "RequestResponse",
-        Payload: JSON.stringify({ UserID: userID }), // Use the correct userID attribute
+        Payload: JSON.stringify({ email: userEmail  }), 
       };
 
       try {

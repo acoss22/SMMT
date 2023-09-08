@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-amplify/ui-react": "^5.3.0",
     "@fortawesome/fontawesome-free": "^6.4.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
@@ -19,7 +20,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react": "^18.2.20",
-    "aws-amplify": "^5.3.8",
+    "aws-amplify": "^5.3.10",
     "aws-amplify-react": "^5.1.43",
     "aws-sdk": "^2.1445.0",
     "chart.js": "^4.3.3",
@@ -36,7 +37,6 @@
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "html-webpack-plugin": "^5.5.3",
     "node-sass": "^9.0.0",
     "sass-loader": "^13.3.2",
-    "style-loader": "^3.3.3"
+    "style-loader": "^3.3.3",
+    "webpack-cli": "^5.1.4"
   }
 }

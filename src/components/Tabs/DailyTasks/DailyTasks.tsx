@@ -4,7 +4,7 @@ import styles from "./dailytasks.module.scss";
 import { RootState } from "../../../store/store";
 import { toggleTaskChecked, updateTasks } from "../../../store/reducer";
 import { Auth, Logger } from "aws-amplify";
-import awsconfig from "../../../aws-exports";
+import awsconfig from '../../.././aws-exports';
 import AWS from "aws-sdk";
 
 Auth.configure(awsconfig); // Configure Amplify

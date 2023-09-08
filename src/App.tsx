@@ -4,7 +4,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import store from "./store/store";
 import { Auth, Amplify } from "aws-amplify"; // Import Amplify here
-import awsconfig from "./aws-exports"; // Update the path if needed
+import awsconfig from './aws-exports';
 import styles from "./app.module.scss";
 import "./styles.scss";
 import LoginForm from "./components/LoginForm/LoginForm";

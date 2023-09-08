@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -26,8 +26,8 @@ const App: React.FC = () => {
   const [verificationEmail, setVerificationEmail] = useState("");
   const [recoverPasswordMode, setRecoverPasswordMode] =
     useState<boolean>(false);
-
-
+    const [username, setUsername] = useState<string | null>(null);;
+    
   const handleSwitchToSignUp = () => {
     setShowSignUp(true);
   };
@@ -45,9 +45,24 @@ const App: React.FC = () => {
     try {
       await Auth.signIn(username, password);
       setIsLoggedIn(true);
+      const user = await Auth.currentAuthenticatedUser();
+      setUsername(user.attributes.name);
+      console.log(user);
     } catch (error) {
       console.error("Login error:", error);
-      // Handle login error (e.g., display error message to the user)
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      const guestEmail = "guestsmmt@gmail.com";
+      const guestPassword = "Iamguest1!";
+      await Auth.signIn(guestEmail, guestPassword);
+      setIsLoggedIn(true);
+      const user = await Auth.currentAuthenticatedUser();
+      setUsername(user.attributes.name);
+    } catch (error) {
+      console.error("Guest login error:", error);
     }
   };
 
@@ -55,7 +70,6 @@ const App: React.FC = () => {
     try {
       const email = verificationEmail;
 
-      // Construct the username based on email and timestamp
       const reconstructedUsername = `${email}#${Math.floor(Date.now() / 1000)}`;
 
       console.log(
@@ -64,21 +78,21 @@ const App: React.FC = () => {
       );
 
       await Auth.resendSignUp(reconstructedUsername);
-      // Optionally display a message to the user indicating the code has been resent
+    
     } catch (error) {
       console.error("Resend verification code error:", error);
-      // Handle resend verification code error (e.g., display error message to the user)
+    
     }
   };
 
   const handleVerification = async () => {
     try {
-      // Use the inputs for verificationEmail and verificationCode
+    
       await Auth.confirmSignUp(verificationEmail, verificationCode);
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Verification error:", error);
-      // Handle verification error (e.g., display error message to the user)
+   
     }
   };
 
@@ -88,10 +102,10 @@ const App: React.FC = () => {
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout error:", error);
-      // Handle logout error (e.g., display error message to the user)
+     
     }
   };
-  
+
   const handleSignUp = async (
     username: string,
     password: string,
@@ -103,21 +117,20 @@ const App: React.FC = () => {
         password,
         attributes: {
           email,
-          name: username // Provide any additional attributes as needed
+          name: username,
+          preferred_username: username,
         },
-        validationData: [], // Empty array for validation data
+        validationData: [],
       });
-  
-      setShowSignUp(false); // Close the sign-up form after successful sign-up
+
+      setShowSignUp(false);
     } catch (error) {
       console.error("Sign-up error:", error);
-      // Handle sign-up error (e.g., display error message to the user)
     }
   };
-  
-  
+
   const handleExitRecoverMode = () => {
-    setRecoverPasswordMode(false); // Deactivate password recovery mode
+    setRecoverPasswordMode(false);
   };
 
   return (
@@ -126,6 +139,7 @@ const App: React.FC = () => {
         title="Social Media Management Tool"
         isLoggedIn={isLoggedIn}
         onLogout={handleLogout}
+        username={username}
       />
       <Provider store={store}>
         <div>
@@ -149,7 +163,7 @@ const App: React.FC = () => {
                     />
                   )}
                   {verificationCodeInputVisible && !recoverPasswordMode && (
-                    <div className={styles.verificationBlock}>
+                    <div className={styles.buttonContainer}>
                       <div className={styles.resendBlock}>
                         <div className={styles.verificationEmailBlock}>
                           <label
@@ -216,6 +230,11 @@ const App: React.FC = () => {
               </div>
             )}
           </Suspense>
+        </div>
+        <div className={styles.buttonContainer}>
+          <button className={styles.verifyButton} onClick={handleGuestLogin}>
+            Enter as a guest
+          </button>
         </div>
       </Provider>
       <Footer copyright="2023 Ana Sequeira" />

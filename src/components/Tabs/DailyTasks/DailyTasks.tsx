@@ -7,7 +7,7 @@ import { Auth, Logger } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 import AWS from "aws-sdk";
 
-Auth.configure(awsconfig); // Configure Amplify
+Auth.configure(awsconfig);
 
 const logger = new Logger("DailyTasks");
 
@@ -18,7 +18,7 @@ interface Task {
 }
 
 const DailyTasks: React.FC = () => {
-  const tasks = useSelector((state: RootState) => state.tasks); // Access tasks directly
+  const tasks = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch();
   const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -87,20 +87,27 @@ const DailyTasks: React.FC = () => {
 
   return (
     <div className={styles["tab2-content"]}>
+      <h2>Tasks</h2>
+      <div className={styles.tasksContainer}>
       {fetchError ? (
         <div>{fetchError}</div>
       ) : (
-        tasks.map((task: Task) => ( // Annotate the type of 'task' parameter
-          <div key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.isChecked}
-              onChange={() => handleTaskToggle(task.id)}
-            />
-            <span>{task.description}</span>
-          </div>
-        ))
+        tasks.map(
+          (
+            task: Task // Annotate the type of 'task' parameter
+          ) => (
+            <div key={task.id}>
+              <input
+                type="checkbox"
+                checked={task.isChecked}
+                onChange={() => handleTaskToggle(task.id)}
+              />
+              <span>{task.description}</span>
+            </div>
+          )
+        )
       )}
+      </div>
     </div>
   );
 };

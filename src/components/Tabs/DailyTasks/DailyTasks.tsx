@@ -98,6 +98,7 @@ const DailyTasks: React.FC = () => {
           ) => (
             <div key={task.id}>
               <input
+              aria-labelledby="checkbox-tasks"
                 type="checkbox"
                 checked={task.isChecked}
                 onChange={() => handleTaskToggle(task.id)}

@@ -10,7 +10,7 @@ export interface TabState {
   activeTab: number;
   tasks: Task[];
   followers: SocialMediaFollowers;
-  lastUpdated: string; 
+  lastUpdated: string;
   followerHistory: FollowerHistory[];
 }
 export interface FollowerHistory {
@@ -27,16 +27,7 @@ export interface SocialMediaFollowers {
 const initialState: TabState = {
   activeTab: 0,
   tasks: [
-    { id: "instaStory", description: "Make an Instagram Story", isChecked: false },
-    { id: "instaPost", description: "Make an Instagram Post", isChecked: false },
-    { id: "twitterPost", description: "Make a Twitter Post", isChecked: false },
-    { id: "YoutubeShort", description: "Make a Youtube Short", isChecked: false },
-    { id: "InstagramReel", description: "Make an Instagram Reel", isChecked: false },
-    { id: "YoutubeVideo", description: "Make a Youtube Video", isChecked: false },
-    { id: "TwitchStream", description: "Make a Twitch Stream", isChecked: false },
-    { id: "FacebookPost", description: "Make a Facebook Post", isChecked: false },
-    { id: "LinkedinPost", description: "Make a Linkedin Post", isChecked: false },
-],
+  ],
   followers: {
     Facebook: 45,
     Instagram: 10,
@@ -102,11 +93,11 @@ const tabSlice = createSlice({
     updateFollowerCount: (state, action: PayloadAction<UpdateFollowerActionPayload>) => {
       const { platform, count } = action.payload;
       const prevCount = state.followers[platform];
-    
+
       if (prevCount !== count) {
         state.followers[platform] = count;
         state.lastUpdated = new Date().toLocaleString();
-    
+
         // Create a new object with prevCount and other properties
         const newFollowerHistoryEntry: FollowerHistory = {
           platform,
@@ -114,7 +105,7 @@ const tabSlice = createSlice({
           count,
           timestamp: state.lastUpdated,
         };
-    
+
         // Push the new object into the followerHistory array
         state.followerHistory.push(newFollowerHistoryEntry);
       }
@@ -142,7 +133,7 @@ const tabSlice = createSlice({
       state.tasks = action.payload;
     },
 
-    
+
   },
 });
 

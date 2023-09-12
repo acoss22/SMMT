@@ -21,6 +21,7 @@ const DailyTasks: React.FC = () => {
   const tasks = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch();
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleTaskToggle = (taskId: string) => {
     dispatch(toggleTaskChecked(taskId));
@@ -30,7 +31,7 @@ const DailyTasks: React.FC = () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
 
-      const userEmail = user.attributes.email; 
+      const userEmail = user.attributes.email;
 
       // Use Amplify's Auth to get user credentials
       const credentials = await Auth.currentCredentials();
@@ -44,7 +45,7 @@ const DailyTasks: React.FC = () => {
       const params = {
         FunctionName: "getTasksFromUsername",
         InvocationType: "RequestResponse",
-        Payload: JSON.stringify({ email: userEmail  }), 
+        Payload: JSON.stringify({ email: userEmail }),
       };
 
       try {
@@ -79,6 +80,8 @@ const DailyTasks: React.FC = () => {
       logger.error("Error fetching user:", error);
       setFetchError("Error fetching user.");
     }
+
+    setIsLoading(false); // Mark loading as complete
   };
 
   useEffect(() => {
@@ -89,25 +92,24 @@ const DailyTasks: React.FC = () => {
     <div className={styles["tab2-content"]}>
       <h2>Tasks</h2>
       <div className={styles.tasksContainer}>
-      {fetchError ? (
-        <div>{fetchError}</div>
-      ) : (
-        tasks.map(
-          (
-            task: Task // Annotate the type of 'task' parameter
-          ) => (
-            <div key={task.id}>
-              <input
-              aria-labelledby="checkbox-tasks"
-                type="checkbox"
-                checked={task.isChecked}
-                onChange={() => handleTaskToggle(task.id)}
-              />
-              <span>{task.description}</span>
-            </div>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : fetchError ? (
+          <div>{fetchError}</div>
+        ) : (
+          tasks.map(
+            (task: Task) => (
+              <div key={task.id}>
+                <input
+                  type="checkbox"
+                  checked={task.isChecked}
+                  onChange={() => handleTaskToggle(task.id)}
+                />
+                <span>{task.description}</span>
+              </div>
+            )
           )
-        )
-      )}
+        )}
       </div>
     </div>
   );

@@ -170,8 +170,8 @@ const FollowerCount: React.FC = () => {
                     className={styles["input-checkbox"]}
                     type="number"
                     value={
-                      followerData && followerData.followers !== undefined
-                        ? followerData.followers.toString() // Access followers property
+                      followerData && followerData.count !== undefined
+                        ? followerData.count.toString() // Access followers property
                         : ""
                     }
                     onChange={(e) => {

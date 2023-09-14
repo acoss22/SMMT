@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateFollowerCount,
   addSocialMedia,
   deleteSocialMedia,
+  updateFollowers
 } from "../../../store/reducer";
 import { RootState } from "../../../store/store";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -17,19 +18,32 @@ import {
   faTwitch,
   IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
-
+import { Auth, Logger } from "aws-amplify";
+import awsconfig from "../../../aws-exports";
+import AWS from "aws-sdk";
 import styles from "./followercount.module.scss";
-
+ 
+Auth.configure(awsconfig);
+ 
+const logger = new Logger("Follower Count");
+ 
+interface FollowerCount {
+  id: string;
+  followers: number;
+  newValue: number;
+  platform: string;
+}
+ 
 const FollowerCount: React.FC = () => {
   const dispatch = useDispatch();
-
   const followers = useSelector((state: RootState) => state.followers);
-  const lastUpdated = useSelector((state: RootState) => state.lastUpdated);
   const [newPlatform, setNewPlatform] = useState("");
   const [newCount, setNewCount] = useState(0);
   const [isPlatformEmpty, setIsPlatformEmpty] = useState(false);
   const [isDuplicatePlatform, setIsDuplicatePlatform] = useState(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+ 
   const platformIcons: { [key: string]: IconDefinition } = {
     Facebook: faFacebookF,
     Instagram: faInstagram,
@@ -38,7 +52,7 @@ const FollowerCount: React.FC = () => {
     Twitter: faTwitter,
     Twitch: faTwitch,
   };
-
+ 
   const handleFollowerChange = useCallback(
     (platform: string, value: number) => {
       const newValue = Math.max(0, value);
@@ -46,14 +60,14 @@ const FollowerCount: React.FC = () => {
     },
     [dispatch]
   );
-
+ 
   const handleAddSocialMedia = useCallback(() => {
     if (newPlatform.trim() !== "") {
       setIsPlatformEmpty(false);
-
+ 
       if (!followers[newPlatform]) {
         setIsDuplicatePlatform(false);
-
+ 
         dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
         setNewPlatform("");
         setNewCount(0);
@@ -64,16 +78,69 @@ const FollowerCount: React.FC = () => {
       setIsPlatformEmpty(true);
     }
   }, [dispatch, followers, newPlatform, newCount]);
-
+ 
   const handleDeleteSocialMedia = useCallback(
     (platform: string) => {
       dispatch(deleteSocialMedia(platform));
     },
     [dispatch]
   );
-
+ 
+  const fetchUserFollowers = async () => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      const userEmail = user.attributes.email;
+      const credentials = await Auth.currentCredentials();
+      const lambda = new AWS.Lambda({
+        credentials: Auth.essentialCredentials(credentials),
+        region: awsconfig.aws_project_region,
+      });
+      const params = {
+        FunctionName: "getFollowersFromUsername",
+        InvocationType: "RequestResponse",
+        Payload: JSON.stringify({ email: userEmail }),
+      };
+      try {
+        const response = await lambda.invoke(params).promise();
+        if (response.Payload !== undefined) {
+          const payloadString = response.Payload.toString();
+          try {
+            const payload = JSON.parse(payloadString);
+            const followersData = JSON.parse(payload.body);
+            console.log("followersData," , followersData);
+   
+            if (Array.isArray(followersData)) {
+              followersData.forEach((item) => {
+                const { email, followers, platform, newValue } = item;
+                dispatch(updateFollowers({ email, followers, platform, newValue }));
+              });
+              setFetchError(null);
+            } else {
+              setFetchError("Received unexpected data format.");
+            }
+          } catch (parseError) {
+            setFetchError("Error parsing response data.");
+          }
+        } else {
+          setFetchError("Response payload is missing or empty.");
+        }
+      } catch (error) {
+        logger.error("Error retrieving tasks:", error);
+        setFetchError("Error retrieving tasks.");
+      }
+    } catch (error) {
+      logger.error("Error fetching user:", error);
+      setFetchError("Error fetching user.");
+    }
+    setIsLoading(false); // Mark loading as complete
+  };
+   
+  useEffect(() => {
+    fetchUserFollowers();
+  }, []);
+ 
   const memoizedPlatformIcons = useMemo(() => platformIcons, []);
-
+ 
   return (
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
@@ -110,9 +177,9 @@ const FollowerCount: React.FC = () => {
               </div>
               <div>
                 <button
+                title="delete"
                   className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
-                  onClick={() => handleDeleteSocialMedia(platform)}
-                >
+                  onClick={() => handleDeleteSocialMedia(platform)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>

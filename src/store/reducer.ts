@@ -13,6 +13,19 @@ export interface TabState {
   lastUpdated: string;
   followerHistory: FollowerHistory[];
 }
+
+export interface UpdateFollowerActionPayload {
+  platform: string;
+  count: number;
+}
+
+export interface UpdateFollowersActionPayload {
+  email:string;
+  followers: number;
+  platform: string;
+  newValue: number;
+
+}
 export interface FollowerHistory {
   platform: string;
   prevCount: number;
@@ -90,6 +103,7 @@ const tabSlice = createSlice({
     setActiveTab: (state, action: PayloadAction<number>) => {
       state.activeTab = action.payload;
     },
+  
     updateFollowerCount: (state, action: PayloadAction<UpdateFollowerActionPayload>) => {
       const { platform, count } = action.payload;
       const prevCount = state.followers[platform];
@@ -131,17 +145,30 @@ const tabSlice = createSlice({
       console.log("tasks:", state.tasks); // Add this line before the mapping operation
 
       state.tasks = action.payload;
+    },  
+    updateFollowers: (state, action: PayloadAction<UpdateFollowersActionPayload>) => {
+      const { email, followers, platform, newValue } = action.payload;
+     
+      // Update the state.followers object with the new values
+      state.followers[platform] = newValue;
+      state.lastUpdated = new Date().toLocaleString();
+     
+      // Create a new FollowerHistory entry
+      const newFollowerHistoryEntry: FollowerHistory = {
+        platform,
+        prevCount: followers,
+        count: newValue,
+        timestamp: state.lastUpdated,
+      };
+     
+      // Push the new object into the followerHistory array
+      state.followerHistory.push(newFollowerHistoryEntry);
     },
-
-
   },
 });
 
-export interface UpdateFollowerActionPayload {
-  platform: string;
-  count: number;
-}
 
-export const { setActiveTab, updateFollowerCount, toggleTaskChecked, addSocialMedia, deleteSocialMedia, updateTasks } = tabSlice.actions;
+
+export const { setActiveTab, updateFollowerCount, toggleTaskChecked, addSocialMedia, deleteSocialMedia, updateTasks, updateFollowers } = tabSlice.actions;
 
 export default tabSlice.reducer;

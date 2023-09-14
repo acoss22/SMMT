@@ -23,7 +23,7 @@ const ActivityLogs: React.FC = () => {
       history: FollowerHistory[];
     };
   }>({});
-
+  
   useEffect(() => {
     const updatedPreviousCounts = {} as {
       [platform: string]: {
@@ -31,17 +31,16 @@ const ActivityLogs: React.FC = () => {
         history: FollowerHistory[];
       };
     };
-
+  
     Object.keys(followers).forEach((platform) => {
       updatedPreviousCounts[platform] = {
-        currentCount: followers[platform],
+        currentCount: Number(followers[platform]) || 0, // Explicitly cast to number and use 0 as the default value
         history: [...(previousCounts[platform]?.history || [])],
       };
     });
-
+  
     setPreviousCounts(updatedPreviousCounts);
   }, [followers, previousCounts]);
-
   const generateLogMessages = () => {
     const logMessages: string[] = [];
 

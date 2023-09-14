@@ -4,7 +4,8 @@ import {
   updateFollowerCount,
   addSocialMedia,
   deleteSocialMedia,
-  updateFollowers
+  updateFollowers,
+  UpdateFollowersActionPayload,
 } from "../../../store/reducer";
 import { RootState } from "../../../store/store";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -22,28 +23,29 @@ import { Auth, Logger } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 import AWS from "aws-sdk";
 import styles from "./followercount.module.scss";
- 
+
 Auth.configure(awsconfig);
- 
+
 const logger = new Logger("Follower Count");
- 
+
 interface FollowerCount {
   id: string;
   followers: number;
   newValue: number;
   platform: string;
 }
- 
+
 const FollowerCount: React.FC = () => {
   const dispatch = useDispatch();
   const followers = useSelector((state: RootState) => state.followers);
+
   const [newPlatform, setNewPlatform] = useState("");
   const [newCount, setNewCount] = useState(0);
   const [isPlatformEmpty, setIsPlatformEmpty] = useState(false);
   const [isDuplicatePlatform, setIsDuplicatePlatform] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
- 
+
   const platformIcons: { [key: string]: IconDefinition } = {
     Facebook: faFacebookF,
     Instagram: faInstagram,
@@ -52,7 +54,7 @@ const FollowerCount: React.FC = () => {
     Twitter: faTwitter,
     Twitch: faTwitch,
   };
- 
+
   const handleFollowerChange = useCallback(
     (platform: string, value: number) => {
       const newValue = Math.max(0, value);
@@ -60,14 +62,18 @@ const FollowerCount: React.FC = () => {
     },
     [dispatch]
   );
- 
+
   const handleAddSocialMedia = useCallback(() => {
     if (newPlatform.trim() !== "") {
       setIsPlatformEmpty(false);
- 
-      if (!followers[newPlatform]) {
+
+      // Check if a follower with the same platform already exists in the followers array
+      const existingFollower = followers[newPlatform];
+
+      if (typeof existingFollower === "undefined") {
         setIsDuplicatePlatform(false);
- 
+
+        // Dispatch the action with the new follower data
         dispatch(addSocialMedia({ platform: newPlatform, count: newCount }));
         setNewPlatform("");
         setNewCount(0);
@@ -78,14 +84,14 @@ const FollowerCount: React.FC = () => {
       setIsPlatformEmpty(true);
     }
   }, [dispatch, followers, newPlatform, newCount]);
- 
+
   const handleDeleteSocialMedia = useCallback(
     (platform: string) => {
       dispatch(deleteSocialMedia(platform));
     },
     [dispatch]
   );
- 
+
   const fetchUserFollowers = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
@@ -107,12 +113,12 @@ const FollowerCount: React.FC = () => {
           try {
             const payload = JSON.parse(payloadString);
             const followersData = JSON.parse(payload.body);
-            console.log("followersData," , followersData);
-   
+            console.log("followersData,", followersData);
+
             if (Array.isArray(followersData)) {
               followersData.forEach((item) => {
                 const { email, followers, platform, newValue } = item;
-                dispatch(updateFollowers({ email, followers, platform, newValue }));
+                dispatch(updateFollowers(item));
               });
               setFetchError(null);
             } else {
@@ -134,13 +140,14 @@ const FollowerCount: React.FC = () => {
     }
     setIsLoading(false); // Mark loading as complete
   };
-   
+
   useEffect(() => {
     fetchUserFollowers();
+    console.log("Followers:", followers);
   }, []);
- 
+
   const memoizedPlatformIcons = useMemo(() => platformIcons, []);
- 
+
   return (
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
@@ -152,10 +159,17 @@ const FollowerCount: React.FC = () => {
               <input
                 className={styles["input-checkbox"]}
                 type="number"
-                value={followers[platform]}
-                onChange={(e) =>
-                  handleFollowerChange(platform, parseInt(e.target.value))
+                value={
+                  followers[platform] !== undefined
+                    ? followers[platform].toString() // Convert to string
+                    : ""
                 }
+                onChange={(e) => {
+                  const newValue = parseInt(e.target.value);
+                  if (!isNaN(newValue)) {
+                    handleFollowerChange(platform, newValue);
+                  }
+                }}
                 onKeyPress={(e) => {
                   if (isNaN(Number(e.key))) {
                     e.preventDefault();
@@ -177,9 +191,10 @@ const FollowerCount: React.FC = () => {
               </div>
               <div>
                 <button
-                title="delete"
+                  title="delete"
                   className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
-                  onClick={() => handleDeleteSocialMedia(platform)}>
+                  onClick={() => handleDeleteSocialMedia(platform)}
+                >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>

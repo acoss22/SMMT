@@ -5,7 +5,6 @@ import {
   addSocialMedia,
   deleteSocialMedia,
   updateFollowers,
-  UpdateFollowersActionPayload,
 } from "../../../store/reducer";
 import { RootState } from "../../../store/store";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -144,64 +143,78 @@ const FollowerCount: React.FC = () => {
   useEffect(() => {
     fetchUserFollowers();
     console.log("Followers:", followers);
-  }, []);
+  }, [isLoading]);
 
   const memoizedPlatformIcons = useMemo(() => platformIcons, []);
 
   return (
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
-      <div className={styles["social-list"]}>
-        {Object.keys(followers).map((platform) => (
-          <div key={platform} className={styles["social-item"]}>
-            <h3>{platform}</h3>
-            <div className={styles["input-container"]}>
-              <input
-                className={styles["input-checkbox"]}
-                type="number"
-                value={
-                  followers[platform] !== undefined
-                    ? followers[platform].toString() // Convert to string
-                    : ""
-                }
-                onChange={(e) => {
-                  const newValue = parseInt(e.target.value);
-                  if (!isNaN(newValue)) {
-                    handleFollowerChange(platform, newValue);
-                  }
-                }}
-                onKeyPress={(e) => {
-                  if (isNaN(Number(e.key))) {
-                    e.preventDefault();
-                  }
-                }}
-                onPaste={(e) => {
-                  const pasteData = e.clipboardData.getData("text/plain");
-                  if (!/^\d+$/.test(pasteData)) {
-                    e.preventDefault();
-                  }
-                }}
-              />
 
-              <div className={styles.platform}>
-                {memoizedPlatformIcons[platform] && (
-                  <FontAwesomeIcon icon={memoizedPlatformIcons[platform]} />
-                )}
-                Followers
+      {isLoading ? ( // Show loading message when isLoading is true
+        <p>Loading...</p>
+      ) : fetchError ? ( // Show error message when fetchError is not null
+        <p className={styles["error-message"]}>{fetchError}</p>
+      ) : Object.keys(followers).length === 0 ? (
+        <p>No followers to display.</p>
+      ) : (
+        <div className={styles["social-list"]}>
+          {Object.keys(followers).map((platform) => {
+            console.log("followers UI", followers);
+            const followerData = followers[platform];
+            return (
+              <div key={platform} className={styles["social-item"]}>
+                <h3>{platform}</h3>
+                <div className={styles["input-container"]}>
+                  <input
+                    className={styles["input-checkbox"]}
+                    type="number"
+                    value={
+                      followerData && followerData.followers !== undefined
+                        ? followerData.followers.toString() // Access followers property
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const newValue = parseInt(e.target.value);
+                      if (!isNaN(newValue)) {
+                        handleFollowerChange(platform, newValue);
+                      }
+                    }}
+                    onKeyPress={(e) => {
+                      if (isNaN(Number(e.key))) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onPaste={(e) => {
+                      const pasteData = e.clipboardData.getData("text/plain");
+                      if (!/^\d+$/.test(pasteData)) {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+
+                  <div className={styles.platform}>
+                    {memoizedPlatformIcons[platform] && (
+                      <FontAwesomeIcon icon={memoizedPlatformIcons[platform]} />
+                    )}
+                    Followers
+                  </div>
+                  <div>
+                    <button
+                      title="delete"
+                      className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
+                      onClick={() => handleDeleteSocialMedia(platform)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <button
-                  title="delete"
-                  className={`${styles["delete-social-button"]} ${styles["bottom-right-icon"]}`}
-                  onClick={() => handleDeleteSocialMedia(platform)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
+
       <div className={styles["add-social-media"]}>
         <input
           className={`${styles["add-social-media-input"]} ${

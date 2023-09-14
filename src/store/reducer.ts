@@ -9,7 +9,7 @@ interface Task {
 export interface TabState {
   activeTab: number;
   tasks: Task[];
-  followers: { [platform: string]: UpdateFollowersActionPayload };
+  followers: { [email: string]: { [platform: string]: number } };
   lastUpdated: string;
   followerHistory: FollowerHistory[];
 }
@@ -19,17 +19,25 @@ export interface UpdateFollowerCountActionPayload {
   count: number;
 }
 
-export type UpdateFollowersActionPayload = {
-  email: string;
-  followers: { [platform: string]: number };
-  lastUpdated: string;
-};
-
 export interface FollowerHistory {
   platform: string;
   prevCount: number;
   count: number;
   timestamp: string;
+}
+
+export interface AddSocialMediaActionPayload {
+  platform: string;
+  count: number;
+}
+
+export interface UpdateFollowersActionPayload {
+  UserID: string;
+  count: number;
+  email: string;
+  newValue: number;
+  platform: string;
+  lastUpdated?: string;
 }
 
 const initialState: TabState = {
@@ -39,11 +47,6 @@ const initialState: TabState = {
   lastUpdated: "",
   followerHistory: [],
 };
-
-export interface AddSocialMediaActionPayload {
-  platform: string;
-  count: number;
-}
 
 const tabSlice = createSlice({
   name: "tabs",
@@ -57,16 +60,16 @@ const tabSlice = createSlice({
       const { platform, count } = action.payload;
 
       // Check if the platform already exists in followers
-      if (state.followers[platform]) {
-        state.followers[platform].followers[platform] = count;
-        state.followers[platform].lastUpdated = new Date().toLocaleString();
+      if (state.followers[state.lastUpdated]) {
+        state.followers[state.lastUpdated][platform] = count;
+        state.lastUpdated = new Date().toLocaleString();
 
         // Create a new FollowerHistory entry
         const newFollowerHistoryEntry: FollowerHistory = {
           platform,
-          prevCount: state.followers[platform].followers[platform],
+          prevCount: state.followers[state.lastUpdated][platform],
           count,
-          timestamp: state.followers[platform].lastUpdated,
+          timestamp: state.lastUpdated,
         };
 
         // Push the new object into the followerHistory array
@@ -75,18 +78,28 @@ const tabSlice = createSlice({
     },
 
     updateFollowers: (state, action: PayloadAction<UpdateFollowersActionPayload>) => {
-      const { email, followers, lastUpdated  } = action.payload;
+      const { email, count, platform, newValue, lastUpdated } = action.payload;
     
-      // Update the entire followers object with the new values
-      state.followers = {
-        ...state.followers, // Copy the existing followers
-        [email]: {
-          email,
-          followers,
-          lastUpdated: new Date().toLocaleString(),
-        },
-      };
+      // Check if the platform already exists in state.followers
+      if (state.followers[platform]) {
+        // Update the platform's count and other properties, preserving the rest of the data
+        state.followers[platform] = {
+          ...state.followers[platform],
+          count,
+          // other properties you want to keep intact
+        };
+      } else {
+        // Create a new entry for the platform if it doesn't exist
+        state.followers[platform] = {
+          count,
+          // other properties you want to keep intact
+        };
+      }
+    
+      // You can also update other properties in state here if needed
+      state.lastUpdated = lastUpdated || new Date().toLocaleString();
     },
+    
 
     toggleTaskChecked: (state, action: PayloadAction<string>) => {
       const taskId = action.payload;
@@ -100,30 +113,23 @@ const tabSlice = createSlice({
       action: PayloadAction<AddSocialMediaActionPayload>
     ) => {
       const { platform, count } = action.payload;
-    
-      // Explicitly specify the type of followers object
-      const followersObject: { [platform: string]: UpdateFollowersActionPayload } = state.followers;
-    
+
       // Check if the platform already exists in followers
-      if (followersObject[platform]) {
+      if (state.followers[state.lastUpdated]) {
         // Update the count for the existing platform
-        followersObject[platform].followers[platform] = count;
-        followersObject[platform].lastUpdated = new Date().toLocaleString();
+        state.followers[state.lastUpdated][platform] = count;
+        state.lastUpdated = new Date().toLocaleString();
       } else {
         // Create a new follower entry if the platform doesn't exist
-        followersObject[platform] = {
-          email: "", // Set appropriate values here
-          followers: { [platform]: count },
-          lastUpdated: new Date().toLocaleString(),
+        state.followers[state.lastUpdated] = {
+          [platform]: count,
         };
       }
-    
-      state.followers = followersObject; // Update the state with the modified followers object
     },
-    
+
     deleteSocialMedia: (state, action: PayloadAction<string>) => {
       const platformToDelete = action.payload;
-      delete state.followers[platformToDelete];
+      delete state.followers[state.lastUpdated][platformToDelete];
       state.lastUpdated = new Date().toLocaleString();
     },
 

@@ -22,6 +22,7 @@ import { Auth, Logger } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 import AWS from "aws-sdk";
 import styles from "./followercount.module.scss";
+import Loading from "react-loading";
 
 Auth.configure(awsconfig);
 
@@ -151,9 +152,9 @@ const FollowerCount: React.FC = () => {
     <div className={styles["tab2-content"]}>
       <h2>Follower Count</h2>
 
-      {isLoading ? ( // Show loading message when isLoading is true
-        <p>Loading...</p>
-      ) : fetchError ? ( // Show error message when fetchError is not null
+      {isLoading ? (
+        <Loading type="spin" color="#007BFF" height={64} width={64} />
+      ) :  fetchError ? ( // Show error message when fetchError is not null
         <p className={styles["error-message"]}>{fetchError}</p>
       ) : Object.keys(followers).length === 0 ? (
         <p>No followers to display.</p>

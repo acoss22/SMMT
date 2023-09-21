@@ -6,6 +6,7 @@ import { Auth, Logger } from "aws-amplify";
 import awsconfig from "../../../aws-exports";
 import AWS from "aws-sdk";
 import styles from "./dailytasks.module.scss";
+import Loading from "react-loading";
 
 Auth.configure(awsconfig);
 
@@ -92,9 +93,9 @@ const DailyTasks: React.FC = () => {
     <div className={styles["tab2-content"]}>
       <h2>Tasks</h2>
       <div className={styles.tasksContainer}>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : fetchError ? (
+      {isLoading ? (
+        <Loading type="spin" color="#007BFF" height={64} width={64} />
+      ) : fetchError ? (
           <div>{fetchError}</div>
         ) : (
           tasks.map(
